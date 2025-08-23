@@ -2,7 +2,7 @@
 <br/>
 
 <p align="center">
-    <a href="https://dockup.dev">
+    <a href="https://dockup.dev" target="_blank">
       <img width="300" alt="Dockup" src=".github/images/logo.png">
     </a>
 </p>

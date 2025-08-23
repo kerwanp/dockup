@@ -62,7 +62,7 @@ export const rabbitmq = defineService<Options>((config = {}) => {
     description:
       "An open-source message broker that enables applications to communicate by sending and receiving messages through queues.",
     tags: ["messaging"],
-    async create({ workspace }) {
+    async create({ workspace, dataPath }) {
       const docker = new Dockerode();
 
       const container = new ContainerBuilder(docker);
@@ -71,6 +71,7 @@ export const rabbitmq = defineService<Options>((config = {}) => {
         .withName(`${workspace}_${name}`)
         .withImage(image)
         .withPort(5672, port)
+        .withVolumeMount("data", "/var/lib/rabbitmq")
         .withEnv("RABBITMQ_DEFAULT_USER", user)
         .withEnv("RABBITMQ_DEFAULT_PASS", password)
         .withEnv("RABBITMQ_DEFAULT_VHOST", vhost);
@@ -81,20 +82,18 @@ export const rabbitmq = defineService<Options>((config = {}) => {
 
       return new ContainerService("rabbitmq", name, container);
     },
-    metadata: () => {
-      return [
-        {
-          label: "Connection URL",
-          description: "Can be used to connect to the RabbitMQ instance",
-          value: `amqp://${user}:${password}@localhost:${port}${vhost}`,
-        },
-        {
-          label: "Management URL",
-          description:
-            "Can be used to access the management dashboard when enabled",
-          value: `http://localhost:${managementPort}`,
-        },
-      ];
-    },
+    metadata: () => [
+      {
+        label: "Connection URL",
+        description: "Can be used to connect to the RabbitMQ instance",
+        value: `amqp://${user}:${password}@localhost:${port}${vhost}`,
+      },
+      {
+        label: "Management URL",
+        description:
+          "Can be used to access the management dashboard when enabled",
+        value: `http://localhost:${managementPort}`,
+      },
+    ],
   };
 });

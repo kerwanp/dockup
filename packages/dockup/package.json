@@ -1,7 +1,7 @@
 {
   "name": "dockup",
   "type": "module",
-  "version": "0.0.0-alpha.0",
+  "version": "0.0.0-alpha.1",
   "repository": {
     "type": "git",
     "url": "git+https://github.com/kerwanp/dockup.git"
@@ -55,6 +55,7 @@
     "c12": "^3.2.0",
     "chalk": "^5.6.0",
     "citty": "^0.1.6",
+    "defu": "^6.1.4",
     "dockerode": "^4.0.7",
     "hookable": "^5.5.3",
     "ink": "^6.2.2",

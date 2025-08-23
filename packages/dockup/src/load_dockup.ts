@@ -1,3 +1,4 @@
+import { join } from "pathe";
 import { ResolvedDockupConfig } from "./config/types.js";
 import { Service } from "./services/service.js";
 
@@ -11,10 +12,14 @@ export interface Dockup {
 
 export async function loadDockup({
   config,
+  cwd = process.cwd(),
 }: ResolvedDockupConfig): Promise<Dockup> {
   const services = await Promise.all(
     config.services.map((service) =>
-      service.create({ workspace: config.name }),
+      service.create({
+        workspace: config.name,
+        dataPath: join(cwd, ".dockup"),
+      }),
     ),
   );
 

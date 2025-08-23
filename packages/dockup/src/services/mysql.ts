@@ -5,9 +5,9 @@ import { ContainerService } from "../container/container_service.js";
 
 export interface Options extends BaseConfig {
   /**
-   * Postgresql exposed port on host.
+   * MySQL exposed port on host.
    *
-   * @default 5432
+   * @default 3306
    */
   port?: number;
 
@@ -17,6 +17,13 @@ export interface Options extends BaseConfig {
    * @default "database"
    */
   database?: string;
+
+  /**
+   * Root user password.
+   *
+   * @default "password"
+   */
+  rootPassword?: string;
 
   /**
    * Default username.
@@ -33,21 +40,22 @@ export interface Options extends BaseConfig {
   password?: string;
 }
 
-export const postgresql = defineService<Options>((config = {}) => {
+export const mysql = defineService<Options>((config = {}) => {
   const {
-    name = "postgresql",
-    image = "postgres:latest",
-    port = 5432,
+    name = "mysql",
+    image = "mysql:8",
+    port = 3306,
     database = "database",
+    rootPassword = "password",
     user = "user",
     password = "password",
   } = config;
 
   return {
     type: "container",
-    name: "PostgreSQL",
+    name: "MySQL",
     description:
-      "An open-source relational database known for reliability and advanced features.",
+      "The world's most popular open-source relational database management system.",
     tags: ["database"],
     create: async ({ workspace }) => {
       const docker = new Dockerode();
@@ -56,19 +64,25 @@ export const postgresql = defineService<Options>((config = {}) => {
       builder
         .withName(`${workspace}_${name}`)
         .withImage(image)
-        .withPort(5432, port)
-        .withEnv("POSTGRES_DB", database)
-        .withEnv("POSTGRES_USER", user)
-        .withEnv("POSTGRES_PASSWORD", password)
-        .withVolumeMount("data", "/var/lib/postgresql");
+        .withPort(3306, port)
+        .withEnv("MYSQL_ROOT_PASSWORD", rootPassword)
+        .withEnv("MYSQL_DATABASE", database)
+        .withEnv("MYSQL_USER", user)
+        .withEnv("MYSQL_PASSWORD", password)
+        .withVolumeMount("data", "/var/lib/mysql");
 
-      return new ContainerService("postgresql", name, builder);
+      return new ContainerService("mysql", name, builder);
     },
     metadata: () => [
       {
         label: "Connection URL",
         description: "Can be used to connect to the database",
-        value: `postgres://${user}:${password}@localhost:${port}/${database}`,
+        value: `mysql://${user}:${password}@localhost:${port}/${database}`,
+      },
+      {
+        label: "Root Connection URL",
+        description: "Root user connection string",
+        value: `mysql://root:${rootPassword}@localhost:${port}/${database}`,
       },
     ],
   };

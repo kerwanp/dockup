@@ -1,3 +1,4 @@
+import { defu } from "defu";
 import Dockerode from "dockerode";
 import { Writable } from "node:stream";
 import { pipeline } from "node:stream/promises";
@@ -46,10 +47,37 @@ export class ContainerBuilder {
     return this;
   }
 
+  withVolumeMount(name: string, path: string) {
+    return this.merge({
+      HostConfig: {
+        Mounts: [
+          {
+            Target: path,
+            Source: `${this.options.name}_${name}`,
+            Type: "volume",
+          },
+        ],
+      },
+    });
+  }
+
+  withCmd(cmd: string[]) {
+    this.options.Cmd = cmd;
+    return this;
+  }
+
+  merge(options: Dockerode.ContainerCreateOptions) {
+    this.options = defu(this.options, options);
+    return this;
+  }
+
   async build(): Promise<Dockerode.Container> {
     const existing = await this.getExisting();
 
-    if (existing) return existing;
+    if (existing) {
+      await existing.update(this.options);
+      return existing;
+    }
 
     await this.pull();
 

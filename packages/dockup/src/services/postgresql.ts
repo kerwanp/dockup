@@ -1,5 +1,3 @@
-import Dockerode from "dockerode";
-import { ContainerBuilder } from "../container/container_builder.js";
 import { BaseConfig, defineService } from "./define_service.js";
 import { ContainerService } from "../container/container_service.js";
 
@@ -49,11 +47,10 @@ export const postgresql = defineService<Options>((config = {}) => {
     description:
       "An open-source relational database known for reliability and advanced features.",
     tags: ["database"],
-    create: async ({ workspace }) => {
-      const docker = new Dockerode();
-      const builder = new ContainerBuilder(docker);
+    create: async ({ workspace, docker }) => {
+      const service = new ContainerService("postgresql", name, docker);
 
-      builder
+      service
         .withName(`${workspace}_${name}`)
         .withImage(image)
         .withPort(5432, port)
@@ -62,7 +59,7 @@ export const postgresql = defineService<Options>((config = {}) => {
         .withEnv("POSTGRES_PASSWORD", password)
         .withVolumeMount("data", "/var/lib/postgresql");
 
-      return new ContainerService("postgresql", name, builder);
+      return service;
     },
     metadata: () => [
       {

@@ -24,7 +24,7 @@ export default defineCommand({
 
     const services = args.service
       ? [args.service]
-      : dockup.services.map((s) => s.instance);
+      : dockup.services.map((s) => s.id);
 
     log.warn(`Services to be removed: ${services.join(", ")}`);
 

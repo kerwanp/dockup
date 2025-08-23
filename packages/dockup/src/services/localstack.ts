@@ -1,5 +1,3 @@
-import Dockerode from "dockerode";
-import { ContainerBuilder } from "../container/container_builder.js";
 import { BaseConfig, defineService } from "./define_service.js";
 import { ContainerService } from "../container/container_service.js";
 
@@ -75,11 +73,10 @@ export const localstack = defineService<Options>((config = {}) => {
     description:
       "A fully functional local AWS cloud stack for development and testing.",
     tags: ["aws", "cloud", "testing"],
-    create: async ({ workspace }) => {
-      const docker = new Dockerode();
-      const builder = new ContainerBuilder(docker);
+    create: async ({ workspace, docker }) => {
+      const service = new ContainerService("localstack", name, docker);
 
-      builder
+      service
         .withName(`${workspace}_${name}`)
         .withImage(image)
         .withPort(4566, port)
@@ -91,21 +88,21 @@ export const localstack = defineService<Options>((config = {}) => {
         .withVolumeMount("data", "/var/lib/localstack");
 
       if (services) {
-        builder.withEnv("SERVICES", services);
+        service.withEnv("SERVICES", services);
       }
 
       // Mount Docker socket for Lambda and other services that need it
-      builder.merge({
+      service.with({
         HostConfig: {
           Binds: ["/var/run/docker.sock:/var/run/docker.sock"],
         },
       });
 
-      return new ContainerService("localstack", name, builder);
+      return service;
     },
     metadata: () => {
       const endpoint = `http://localhost:${port}`;
-      
+
       return [
         {
           label: "AWS Endpoint",
@@ -131,3 +128,4 @@ export const localstack = defineService<Options>((config = {}) => {
     },
   };
 });
+

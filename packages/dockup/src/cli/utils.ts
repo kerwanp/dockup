@@ -14,7 +14,10 @@ export const colors = {
 };
 
 export const prompts = {
-  intro: (value: string) => intro(chalk.bgHex(colors.primary)(` ${value} `)),
+  intro: (value: string) => {
+    console.log("");
+    intro(chalk.bgHex(colors.primary)(` ${value} `));
+  },
 };
 
 export async function isGloballyInstalled() {

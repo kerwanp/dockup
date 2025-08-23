@@ -65,30 +65,33 @@ export const memcached = defineService<Options>((config = {}) => {
     description:
       "High-performance distributed memory caching system for speeding up applications.",
     tags: ["cache", "performance"],
-    create: async ({ workspace }) => {
-      const docker = new Dockerode();
-      const builder = new ContainerBuilder(docker);
+    create: async ({ workspace, docker }) => {
+      const service = new ContainerService("memcached", name, docker);
 
       // Build memcached command with options
       const cmd = [
         "memcached",
-        "-m", memory.toString(),
-        "-c", maxConnections.toString(),
-        "-t", threads.toString(),
-        "-I", maxItemSize,
+        "-m",
+        memory.toString(),
+        "-c",
+        maxConnections.toString(),
+        "-t",
+        threads.toString(),
+        "-I",
+        maxItemSize,
       ];
 
       if (verbose) {
         cmd.push("-vv");
       }
 
-      builder
+      service
         .withName(`${workspace}_${name}`)
         .withImage(image)
         .withPort(11211, port)
         .withCmd(cmd);
 
-      return new ContainerService("memcached", name, builder);
+      return service;
     },
     metadata: () => [
       {

@@ -6,6 +6,9 @@ import { DynamicCodeBlock } from "fumadocs-ui/components/dynamic-codeblock";
 import { AuroraText } from "../magic/aurora-text";
 import { highlight } from "fumadocs-core/highlight";
 import { CodeBlock, Pre } from "fumadocs-ui/components/codeblock";
+import { RainbowButton } from "../rainbow-button";
+import { MagicCard } from "../magic/magic-card";
+import { ScriptCopyBtn } from "../magic/script-copy-button";
 
 export const HeroSection = async () => {
   const rendered = await highlight(
@@ -55,7 +58,15 @@ export default defineConfig({
         </div>
       </div>
       <div>
-        <CodeBlock title="dockup.config.ts">{rendered}</CodeBlock>
+        <div>
+          <ScriptCopyBtn
+            showMultiplePackageOptions={false}
+            commandMap={{
+              npm: "npx dockup",
+            }}
+          />
+          <CodeBlock title="dockup.config.ts">{rendered}</CodeBlock>
+        </div>
       </div>
     </section>
   );

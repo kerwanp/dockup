@@ -126,7 +126,7 @@ const ContainerRow = ({
       </Box>
       <Box flexBasis={"25%"}>
         <Text color={isSelected ? colors.onPrimary : undefined}>
-          {service.instance}
+          {service.id}
         </Text>
       </Box>
       <Box flexBasis={"25%"}>

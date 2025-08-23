@@ -24,41 +24,6 @@ export interface Options extends BaseConfig {
    * @default "admin"
    */
   defaultPassword?: string;
-
-  /**
-   * PostgreSQL host to pre-configure.
-   *
-   * @default "postgresql"
-   */
-  postgresHost?: string;
-
-  /**
-   * PostgreSQL port.
-   *
-   * @default 5432
-   */
-  postgresPort?: number;
-
-  /**
-   * PostgreSQL username for connection.
-   *
-   * @default "user"
-   */
-  postgresUser?: string;
-
-  /**
-   * PostgreSQL password for connection.
-   *
-   * @default "password"
-   */
-  postgresPassword?: string;
-
-  /**
-   * PostgreSQL database name.
-   *
-   * @default "database"
-   */
-  postgresDatabase?: string;
 }
 
 export const pgadmin = defineService<Options>((config = {}) => {
@@ -68,11 +33,6 @@ export const pgadmin = defineService<Options>((config = {}) => {
     port = 5050,
     defaultEmail = "admin@admin.com",
     defaultPassword = "admin",
-    postgresHost = "postgresql",
-    postgresPort = 5432,
-    postgresUser = "user",
-    postgresPassword = "password",
-    postgresDatabase = "database",
   } = config;
 
   return {
@@ -81,11 +41,10 @@ export const pgadmin = defineService<Options>((config = {}) => {
     description:
       "Web-based administration and development platform for PostgreSQL databases.",
     tags: ["database", "admin", "postgresql", "web"],
-    create: async ({ workspace }) => {
-      const docker = new Dockerode();
-      const builder = new ContainerBuilder(docker);
+    create: async ({ workspace, docker }) => {
+      const service = new ContainerService("pgadmin", name, docker);
 
-      builder
+      service
         .withName(`${workspace}_${name}`)
         .withImage(image)
         .withPort(80, port)
@@ -95,7 +54,7 @@ export const pgadmin = defineService<Options>((config = {}) => {
         .withEnv("PGADMIN_CONFIG_MASTER_PASSWORD_REQUIRED", "False")
         .withVolumeMount("data", "/var/lib/pgadmin");
 
-      return new ContainerService("pgadmin", name, builder);
+      return service;
     },
     metadata: () => [
       {
@@ -108,16 +67,7 @@ export const pgadmin = defineService<Options>((config = {}) => {
         description: "pgAdmin login credentials",
         value: `Email: ${defaultEmail}, Password: ${defaultPassword}`,
       },
-      {
-        label: "PostgreSQL Connection",
-        description: "Pre-configured database connection details",
-        value: `Host: ${postgresHost}, Port: ${postgresPort}, User: ${postgresUser}`,
-      },
-      {
-        label: "Connection String",
-        description: "PostgreSQL connection for manual setup",
-        value: `postgresql://${postgresUser}:${postgresPassword}@${postgresHost}:${postgresPort}/${postgresDatabase}`,
-      },
     ],
   };
 });
+

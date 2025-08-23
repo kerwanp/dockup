@@ -1,5 +1,3 @@
-import Dockerode from "dockerode";
-import { ContainerBuilder } from "../container/container_builder.js";
 import { BaseConfig, defineService } from "./define_service.js";
 import { ContainerService } from "../container/container_service.js";
 
@@ -73,11 +71,10 @@ export const elasticsearch = defineService<Options>((config = {}) => {
     description:
       "A distributed, RESTful search and analytics engine for all types of data.",
     tags: ["search", "analytics", "database"],
-    create: async ({ workspace }) => {
-      const docker = new Dockerode();
-      const builder = new ContainerBuilder(docker);
+    create: async ({ workspace, docker }) => {
+      const service = new ContainerService("elasticsearch", name, docker);
 
-      builder
+      service
         .withName(`${workspace}_${name}`)
         .withImage(image)
         .withPort(9200, port)
@@ -90,7 +87,7 @@ export const elasticsearch = defineService<Options>((config = {}) => {
         .withEnv("xpack.security.enrollment.enabled", "false")
         .withVolumeMount("data", "/usr/share/elasticsearch/data");
 
-      return new ContainerService("elasticsearch", name, builder);
+      return service;
     },
     metadata: () => [
       {

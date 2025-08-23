@@ -1,5 +1,3 @@
-import Dockerode from "dockerode";
-import { ContainerBuilder } from "../container/container_builder.js";
 import { BaseConfig, defineService } from "./define_service.js";
 import { ContainerService } from "../container/container_service.js";
 
@@ -73,9 +71,8 @@ export const prometheus = defineService<Options>((config = {}) => {
     description:
       "Open-source monitoring and alerting toolkit for collecting metrics and time series data.",
     tags: ["monitoring", "metrics", "alerting"],
-    create: async ({ workspace }) => {
-      const docker = new Dockerode();
-      const builder = new ContainerBuilder(docker);
+    create: async ({ workspace, docker }) => {
+      const service = new ContainerService("prometheus", name, docker);
 
       const cmd = [
         "--config.file=/etc/prometheus/prometheus.yml",
@@ -95,7 +92,7 @@ export const prometheus = defineService<Options>((config = {}) => {
         cmd.push("--web.enable-lifecycle");
       }
 
-      builder
+      service
         .withName(`${workspace}_${name}`)
         .withImage(image)
         .withPort(9090, port)
@@ -104,7 +101,7 @@ export const prometheus = defineService<Options>((config = {}) => {
 
       // Mount custom config if provided
       if (configPath) {
-        builder.merge({
+        service.with({
           HostConfig: {
             Binds: [`${configPath}:/etc/prometheus/prometheus.yml:ro`],
           },
@@ -113,14 +110,14 @@ export const prometheus = defineService<Options>((config = {}) => {
 
       // Mount rules directory if provided
       if (rulesPath) {
-        builder.merge({
+        service.with({
           HostConfig: {
             Binds: [`${rulesPath}:/etc/prometheus/rules:ro`],
           },
         });
       }
 
-      return new ContainerService("prometheus", name, builder);
+      return service;
     },
     metadata: () => {
       const metadata = [
@@ -161,3 +158,4 @@ export const prometheus = defineService<Options>((config = {}) => {
     },
   };
 });
+

@@ -74,9 +74,9 @@ export const kafka = defineService<Options>((config = {}) => {
     description:
       "A distributed event streaming platform for high-performance data pipelines and streaming analytics.",
     tags: ["messaging", "streaming", "events"],
-    create: async ({ workspace }) => {
-      const docker = new Dockerode();
-      
+    create: async ({ workspace, docker }) => {
+      throw new Error("Kafka not implemented");
+
       // Create Zookeeper container first
       const zookeeperBuilder = new ContainerBuilder(docker);
       zookeeperBuilder
@@ -88,7 +88,11 @@ export const kafka = defineService<Options>((config = {}) => {
         .withVolumeMount("zookeeper-data", "/var/lib/zookeeper/data")
         .withVolumeMount("zookeeper-logs", "/var/lib/zookeeper/log");
 
-      const zookeeperService = new ContainerService("zookeeper", `${name}-zookeeper`, zookeeperBuilder);
+      const zookeeperService = new ContainerService(
+        "zookeeper",
+        `${name}-zookeeper`,
+        zookeeperBuilder,
+      );
       await zookeeperService.init();
       await zookeeperService.start();
 
@@ -99,14 +103,26 @@ export const kafka = defineService<Options>((config = {}) => {
         .withImage(image)
         .withPort(9092, port)
         .withEnv("KAFKA_BROKER_ID", brokerId.toString())
-        .withEnv("KAFKA_ZOOKEEPER_CONNECT", `${workspace}_${name}_zookeeper:2181`)
+        .withEnv(
+          "KAFKA_ZOOKEEPER_CONNECT",
+          `${workspace}_${name}_zookeeper:2181`,
+        )
         .withEnv("KAFKA_ADVERTISED_LISTENERS", `PLAINTEXT://localhost:${port}`)
         .withEnv("KAFKA_LISTENER_SECURITY_PROTOCOL_MAP", "PLAINTEXT:PLAINTEXT")
         .withEnv("KAFKA_INTER_BROKER_LISTENER_NAME", "PLAINTEXT")
-        .withEnv("KAFKA_OFFSETS_TOPIC_REPLICATION_FACTOR", defaultReplicationFactor.toString())
+        .withEnv(
+          "KAFKA_OFFSETS_TOPIC_REPLICATION_FACTOR",
+          defaultReplicationFactor.toString(),
+        )
         .withEnv("KAFKA_NUM_PARTITIONS", defaultPartitions.toString())
-        .withEnv("KAFKA_DEFAULT_REPLICATION_FACTOR", defaultReplicationFactor.toString())
-        .withEnv("KAFKA_AUTO_CREATE_TOPICS_ENABLE", autoCreateTopics ? "true" : "false")
+        .withEnv(
+          "KAFKA_DEFAULT_REPLICATION_FACTOR",
+          defaultReplicationFactor.toString(),
+        )
+        .withEnv(
+          "KAFKA_AUTO_CREATE_TOPICS_ENABLE",
+          autoCreateTopics ? "true" : "false",
+        )
         .withVolumeMount("kafka-data", "/var/lib/kafka/data");
 
       // Add Kafka UI if enabled
@@ -117,10 +133,20 @@ export const kafka = defineService<Options>((config = {}) => {
           .withImage("provectuslabs/kafka-ui:latest")
           .withPort(8080, uiPort)
           .withEnv("KAFKA_CLUSTERS_0_NAME", "local")
-          .withEnv("KAFKA_CLUSTERS_0_BOOTSTRAPSERVERS", `${workspace}_${name}:9092`)
-          .withEnv("KAFKA_CLUSTERS_0_ZOOKEEPER", `${workspace}_${name}_zookeeper:2181`);
+          .withEnv(
+            "KAFKA_CLUSTERS_0_BOOTSTRAPSERVERS",
+            `${workspace}_${name}:9092`,
+          )
+          .withEnv(
+            "KAFKA_CLUSTERS_0_ZOOKEEPER",
+            `${workspace}_${name}_zookeeper:2181`,
+          );
 
-        const uiService = new ContainerService("kafka-ui", `${name}-ui`, uiBuilder);
+        const uiService = new ContainerService(
+          "kafka-ui",
+          `${name}-ui`,
+          uiBuilder,
+        );
         await uiService.init();
         await uiService.start();
       }

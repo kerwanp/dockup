@@ -1,5 +1,3 @@
-import Dockerode from "dockerode";
-import { ContainerBuilder } from "../container/container_builder.js";
 import { BaseConfig, defineService } from "./define_service.js";
 import { ContainerService } from "../container/container_service.js";
 
@@ -81,11 +79,10 @@ export const phpmyadmin = defineService<Options>((config = {}) => {
     description:
       "Web-based administration tool for MySQL and MariaDB databases.",
     tags: ["database", "admin", "mysql", "web"],
-    create: async ({ workspace }) => {
-      const docker = new Dockerode();
-      const builder = new ContainerBuilder(docker);
+    create: async ({ workspace, docker }) => {
+      const service = new ContainerService("phpmyadmin", name, docker);
 
-      builder
+      service
         .withName(`${workspace}_${name}`)
         .withImage(image)
         .withPort(80, port)
@@ -97,10 +94,10 @@ export const phpmyadmin = defineService<Options>((config = {}) => {
         .withEnv("MAX_EXECUTION_TIME", maxExecutionTime);
 
       if (arbitraryServerConnection) {
-        builder.withEnv("PMA_ARBITRARY", "1");
+        service.withEnv("PMA_ARBITRARY", "1");
       }
 
-      return new ContainerService("phpmyadmin", name, builder);
+      return service;
     },
     metadata: () => [
       {
@@ -126,3 +123,4 @@ export const phpmyadmin = defineService<Options>((config = {}) => {
     ],
   };
 });
+

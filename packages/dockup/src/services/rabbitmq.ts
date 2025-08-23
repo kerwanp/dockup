@@ -1,5 +1,3 @@
-import Dockerode from "dockerode";
-import { ContainerBuilder } from "../container/container_builder.js";
 import { ContainerService } from "../container/container_service.js";
 import { BaseConfig, defineService } from "./define_service.js";
 
@@ -62,25 +60,24 @@ export const rabbitmq = defineService<Options>((config = {}) => {
     description:
       "An open-source message broker that enables applications to communicate by sending and receiving messages through queues.",
     tags: ["messaging"],
-    async create({ workspace }) {
-      const docker = new Dockerode();
+    async create({ workspace, docker }) {
+      const service = new ContainerService("rabbitmq", name, docker);
 
-      const container = new ContainerBuilder(docker);
-
-      container
+      service
         .withName(`${workspace}_${name}`)
         .withImage(image)
         .withPort(5672, port)
         .withVolumeMount("data", "/var/lib/rabbitmq")
         .withEnv("RABBITMQ_DEFAULT_USER", user)
         .withEnv("RABBITMQ_DEFAULT_PASS", password)
-        .withEnv("RABBITMQ_DEFAULT_VHOST", vhost);
+        .withEnv("RABBITMQ_DEFAULT_VHOST", vhost)
+        .withShell(["/bin/bash"]);
 
       if (management) {
-        container.withPort(15672, managementPort);
+        service.withPort(15672, managementPort);
       }
 
-      return new ContainerService("rabbitmq", name, container);
+      return service;
     },
     metadata: () => [
       {

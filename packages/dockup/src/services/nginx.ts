@@ -1,5 +1,3 @@
-import Dockerode from "dockerode";
-import { ContainerBuilder } from "../container/container_builder.js";
 import { BaseConfig, defineService } from "./define_service.js";
 import { ContainerService } from "../container/container_service.js";
 
@@ -73,11 +71,10 @@ export const nginx = defineService<Options>((config = {}) => {
     description:
       "High-performance web server and reverse proxy for serving static content and load balancing.",
     tags: ["web", "proxy", "server"],
-    create: async ({ workspace }) => {
-      const docker = new Dockerode();
-      const builder = new ContainerBuilder(docker);
+    create: async ({ workspace, docker }) => {
+      const service = new ContainerService("nginx", name, docker);
 
-      builder
+      service
         .withName(`${workspace}_${name}`)
         .withImage(image)
         .withPort(80, port)
@@ -87,14 +84,14 @@ export const nginx = defineService<Options>((config = {}) => {
 
       // Mount custom config if provided
       if (configPath) {
-        builder.merge({
+        service.with({
           HostConfig: {
             Binds: [`${configPath}:/etc/nginx/nginx.conf:ro`],
           },
         });
       } else if (autoIndex) {
         // Create a default config with autoindex enabled
-        builder.withCmd([
+        service.withCmd([
           "sh",
           "-c",
           `echo 'server { listen 80; server_name ${serverName}; location / { root /usr/share/nginx/html; index index.html; autoindex on; } }' > /etc/nginx/conf.d/default.conf && nginx -g 'daemon off;'`,
@@ -103,7 +100,7 @@ export const nginx = defineService<Options>((config = {}) => {
 
       // Mount web root directory if provided
       if (webRoot) {
-        builder.merge({
+        service.with({
           HostConfig: {
             Binds: [`${webRoot}:/usr/share/nginx/html:ro`],
           },
@@ -112,14 +109,14 @@ export const nginx = defineService<Options>((config = {}) => {
 
       // Mount SSL certificates if provided
       if (sslCertsPath) {
-        builder.merge({
+        service.with({
           HostConfig: {
             Binds: [`${sslCertsPath}:/etc/nginx/ssl:ro`],
           },
         });
       }
 
-      return new ContainerService("nginx", name, builder);
+      return service;
     },
     metadata: () => {
       const metadata = [
@@ -155,3 +152,4 @@ export const nginx = defineService<Options>((config = {}) => {
     },
   };
 });
+

@@ -1,5 +1,3 @@
-import Dockerode from "dockerode";
-import { ContainerBuilder } from "../container/container_builder.js";
 import { BaseConfig, defineService } from "./define_service.js";
 import { ContainerService } from "../container/container_service.js";
 
@@ -74,11 +72,10 @@ export const jenkins = defineService<Options>((config = {}) => {
     description:
       "Open source automation server for building, testing, and deploying applications.",
     tags: ["ci-cd", "automation", "build"],
-    create: async ({ workspace }) => {
-      const docker = new Dockerode();
-      const builder = new ContainerBuilder(docker);
+    create: async ({ workspace, docker }) => {
+      const service = new ContainerService("jenkins", name, docker);
 
-      builder
+      service
         .withName(`${workspace}_${name}`)
         .withImage(image)
         .withPort(8080, port)
@@ -90,21 +87,21 @@ export const jenkins = defineService<Options>((config = {}) => {
         .withVolumeMount("docker", "/var/run/docker.sock");
 
       // Mount Docker socket for Docker builds
-      builder.merge({
+      service.with({
         HostConfig: {
           Binds: ["/var/run/docker.sock:/var/run/docker.sock"],
         },
       });
 
       if (skipSetup) {
-        builder.withEnv("JAVA_OPTS", "-Djenkins.install.runSetupWizard=false");
+        service.withEnv("JAVA_OPTS", "-Djenkins.install.runSetupWizard=false");
       }
 
       if (plugins) {
-        builder.withEnv("JENKINS_PLUGINS", plugins);
+        service.withEnv("JENKINS_PLUGINS", plugins);
       }
 
-      return new ContainerService("jenkins", name, builder);
+      return service;
     },
     metadata: () => {
       const metadata = [
@@ -138,3 +135,4 @@ export const jenkins = defineService<Options>((config = {}) => {
     },
   };
 });
+

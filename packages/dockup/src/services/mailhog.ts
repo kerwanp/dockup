@@ -1,5 +1,3 @@
-import Dockerode from "dockerode";
-import { ContainerBuilder } from "../container/container_builder.js";
 import { ContainerService } from "../container/container_service.js";
 import { BaseConfig, defineService } from "./define_service.js";
 
@@ -62,11 +60,10 @@ export const mailhog = defineService<Options>((config = {}) => {
     description:
       "An email testing tool that captures SMTP traffic for development environments with a web UI for viewing messages.",
     tags: ["email", "testing"],
-    async create({ workspace }) {
-      const docker = new Dockerode();
-      const builder = new ContainerBuilder(docker);
+    async create({ workspace, docker }) {
+      const service = new ContainerService("mailhog", name, docker);
 
-      builder
+      service
         .withName(`${workspace}_${name}`)
         .withImage(image)
         .withPort(1025, smtpPort)
@@ -76,7 +73,7 @@ export const mailhog = defineService<Options>((config = {}) => {
 
       if (auth) {
         const authFile = `/tmp/${auth.user}:${auth.password}`;
-        builder
+        service
           .withEnv("MH_AUTH_FILE", authFile)
           .withCmd([
             "sh",
@@ -86,12 +83,12 @@ export const mailhog = defineService<Options>((config = {}) => {
       }
 
       if (storage === "maildir") {
-        builder
+        service
           .withVolumeMount("maildir", "/maildir")
           .withEnv("MH_MAILDIR_PATH", "/maildir");
       }
 
-      return new ContainerService("mailhog", name, builder);
+      return service;
     },
     metadata: () => {
       const smtpUrl = auth

@@ -1,3 +1,4 @@
+import Dockerode from "dockerode";
 import { Service } from "../services/service.js";
 
 export type ServiceFn = () => Promise<void>;
@@ -21,6 +22,7 @@ export type ServiceDefinition = {
 
 export type Context = {
   workspace: string;
+  docker: Dockerode;
 };
 
 export type BaseConfig = {

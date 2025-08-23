@@ -1,5 +1,3 @@
-import Dockerode from "dockerode";
-import { ContainerBuilder } from "../container/container_builder.js";
 import { ContainerService } from "../container/container_service.js";
 import { BaseConfig, defineService } from "./define_service.js";
 
@@ -19,19 +17,18 @@ export const redis = defineService<Options>((config = {}) => {
     description:
       "An in-memory data store used as a database, cache, and message broker for high-performance applications.",
     tags: ["messaging", "database"],
-    async create({ workspace }) {
-      const docker = new Dockerode();
+    async create({ workspace, docker }) {
       const { name = "redis", image = "redis:latest", port = 6379 } = config;
 
-      const container = new ContainerBuilder(docker);
+      const service = new ContainerService("redis", name, docker);
 
-      container
+      service
         .withName(`${workspace}_${name}`)
         .withImage(image)
         .withPort(6379, port)
         .withVolumeMount("data", "/data");
 
-      return new ContainerService("redis", name, container);
+      return service;
     },
   };
 });

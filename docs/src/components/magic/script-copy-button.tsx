@@ -3,55 +3,24 @@
 import { cn } from "@/lib/cn";
 import { Check, Copy } from "lucide-react";
 import { motion } from "motion/react";
-import { useTheme } from "next-themes";
-import { HTMLAttributes, useEffect, useState } from "react";
+import { HTMLAttributes, useState } from "react";
 import { Button } from "../button";
 
 interface ScriptCopyBtnProps extends HTMLAttributes<HTMLDivElement> {
   showMultiplePackageOptions?: boolean;
-  codeLanguage: string;
-  lightTheme: string;
-  darkTheme: string;
   commandMap: Record<string, string>;
   className?: string;
 }
 
 export function ScriptCopyBtn({
   showMultiplePackageOptions = true,
-  codeLanguage,
-  lightTheme,
-  darkTheme,
   commandMap,
   className,
 }: ScriptCopyBtnProps) {
   const packageManagers = Object.keys(commandMap);
   const [packageManager, setPackageManager] = useState(packageManagers[0]);
   const [copied, setCopied] = useState(false);
-  const [highlightedCode, setHighlightedCode] = useState("");
-  const { theme } = useTheme();
   const command = commandMap[packageManager];
-
-  useEffect(() => {
-    async function loadHighlightedCode() {
-      try {
-        const { codeToHtml } = await import("shiki");
-        const highlighted = await codeToHtml(command, {
-          lang: codeLanguage,
-          themes: {
-            light: lightTheme,
-            dark: darkTheme,
-          },
-          defaultColor: theme === "dark" ? "dark" : "light",
-        });
-        setHighlightedCode(highlighted);
-      } catch (error) {
-        console.error("Error highlighting code:", error);
-        setHighlightedCode(`<pre>${command}</pre>`);
-      }
-    }
-
-    loadHighlightedCode();
-  }, [command, theme, codeLanguage, lightTheme, darkTheme]);
 
   const copyToClipboard = () => {
     navigator.clipboard.writeText(command);
@@ -60,7 +29,7 @@ export function ScriptCopyBtn({
   };
 
   return (
-    <div className={cn("max-w-md items-center justify-center", className)}>
+    <div className={cn("items-center justify-center", className)}>
       <div className="w-full space-y-2">
         <div className="mb-2 flex items-center justify-between">
           {showMultiplePackageOptions && (
@@ -101,40 +70,32 @@ export function ScriptCopyBtn({
             </div>
           )}
         </div>
-        <div className="relative flex items-center">
-          <div className="min-w-[300px] grow font-mono">
-            {highlightedCode ? (
-              <div
-                className={`[&>pre]:overflow-x-auto [&>pre]:rounded-md [&>pre]:p-2 [&>pre]:px-4 [&>pre]:font-mono ${
-                  theme === "dark" ? "dark" : "light"
+        <div className="relative w-full">
+          <div className="absolute -inset-1 rounded-lg bg-gradient-to-r from-purple-600 via-orange-600 to-pink-600 opacity-50 blur"></div>
+          <div className="relative min-w-[300px] grow font-mono">
+            <pre className="rounded-md border border-border bg-white p-2 px-4 font-mono dark:bg-muted">
+              {command}
+            </pre>
+            <Button
+              variant="outline"
+              size="icon"
+              className="absolute cursor-pointer right-1 top-1 ml-2 rounded-md"
+              onClick={copyToClipboard}
+              aria-label={copied ? "Copied" : "Copy to clipboard"}
+            >
+              <span className="sr-only">{copied ? "Copied" : "Copy"}</span>
+              <Copy
+                className={`h-4 w-4 transition-all duration-300 ${
+                  copied ? "scale-0" : "scale-100"
                 }`}
-                dangerouslySetInnerHTML={{ __html: highlightedCode }}
               />
-            ) : (
-              <pre className="rounded-md border border-border bg-white p-2 px-4 font-mono dark:bg-black">
-                {command}
-              </pre>
-            )}
+              <Check
+                className={`absolute inset-0 m-auto h-4 w-4 transition-all duration-300 ${
+                  copied ? "scale-100" : "scale-0"
+                }`}
+              />
+            </Button>
           </div>
-          <Button
-            variant="outline"
-            size="icon"
-            className="relative ml-2 rounded-md"
-            onClick={copyToClipboard}
-            aria-label={copied ? "Copied" : "Copy to clipboard"}
-          >
-            <span className="sr-only">{copied ? "Copied" : "Copy"}</span>
-            <Copy
-              className={`h-4 w-4 transition-all duration-300 ${
-                copied ? "scale-0" : "scale-100"
-              }`}
-            />
-            <Check
-              className={`absolute inset-0 m-auto h-4 w-4 transition-all duration-300 ${
-                copied ? "scale-100" : "scale-0"
-              }`}
-            />
-          </Button>
         </div>
       </div>
     </div>

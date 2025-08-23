@@ -55,9 +55,9 @@ export abstract class Service extends Hookable<ServiceEvents> {
   name: string;
 
   /**
-   * Service instance name.
+   * Service instance id.
    */
-  instance: string;
+  id: string;
 
   /**
    * PassThrough stream containing logs.
@@ -67,7 +67,7 @@ export abstract class Service extends Hookable<ServiceEvents> {
   constructor(name: string, instance: string) {
     super();
     this.name = name;
-    this.instance = instance;
+    this.id = instance;
   }
 
   abstract init(): Promise<void>;
@@ -75,6 +75,8 @@ export abstract class Service extends Hookable<ServiceEvents> {
   abstract restart(): Promise<void>;
   abstract stop(): Promise<void>;
   abstract remove(): Promise<void>;
+
+  connect?(): Promise<void>;
 
   updateStatus(status: ServiceStatus, err?: unknown) {
     this.status = status;

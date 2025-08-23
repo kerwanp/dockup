@@ -1,5 +1,3 @@
-import Dockerode from "dockerode";
-import { ContainerBuilder } from "../container/container_builder.js";
 import { BaseConfig, defineService } from "./define_service.js";
 import { ContainerService } from "../container/container_service.js";
 
@@ -74,31 +72,30 @@ export const jaeger = defineService<Options>((config = {}) => {
     description:
       "Open source distributed tracing platform for monitoring and troubleshooting microservices.",
     tags: ["tracing", "monitoring", "observability"],
-    create: async ({ workspace }) => {
-      const docker = new Dockerode();
-      const builder = new ContainerBuilder(docker);
+    create: async ({ workspace, docker }) => {
+      const service = new ContainerService("jaeger", name, docker);
 
-      builder
+      service
         .withName(`${workspace}_${name}`)
         .withImage(image)
-        .withPort(16686, uiPort)        // UI
+        .withPort(16686, uiPort) // UI
         .withPort(14268, collectorPort) // HTTP collector
         .withPort(6831, agentPort, "udp") // UDP agent
-        .withPort(6832, 6832)           // Binary agent
-        .withPort(5778, 5778)           // Config server
+        .withPort(6832, 6832) // Binary agent
+        .withPort(5778, 5778) // Config server
         .withEnv("COLLECTOR_ZIPKIN_HOST_PORT", ":9411")
         .withEnv("SPAN_STORAGE_TYPE", storage)
         .withEnv("LOG_LEVEL", logLevel);
 
       if (storage === "memory") {
-        builder.withEnv("MEMORY_MAX_TRACES", memoryMaxTraces.toString());
+        service.withEnv("MEMORY_MAX_TRACES", memoryMaxTraces.toString());
       }
 
       if (sampling) {
-        builder.withEnv("SAMPLING_STRATEGIES_RELOAD_INTERVAL", "1m");
+        service.withEnv("SAMPLING_STRATEGIES_RELOAD_INTERVAL", "1m");
       }
 
-      return new ContainerService("jaeger", name, builder);
+      return service;
     },
     metadata: () => [
       {
@@ -119,9 +116,10 @@ export const jaeger = defineService<Options>((config = {}) => {
       {
         label: "Storage Backend",
         description: "Trace storage configuration",
-        value: storage === "memory" 
-          ? `${storage} (max ${memoryMaxTraces} traces)` 
-          : storage,
+        value:
+          storage === "memory"
+            ? `${storage} (max ${memoryMaxTraces} traces)`
+            : storage,
       },
     ],
   };

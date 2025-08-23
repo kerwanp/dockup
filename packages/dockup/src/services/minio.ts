@@ -1,5 +1,3 @@
-import Dockerode from "dockerode";
-import { ContainerBuilder } from "../container/container_builder.js";
 import { BaseConfig, defineService } from "./define_service.js";
 import { ContainerService } from "../container/container_service.js";
 
@@ -66,11 +64,10 @@ export const minio = defineService<Options>((config = {}) => {
     description:
       "High-performance S3-compatible object storage for cloud-native applications.",
     tags: ["storage", "s3"],
-    create: async ({ workspace }) => {
-      const docker = new Dockerode();
-      const builder = new ContainerBuilder(docker);
+    create: async ({ workspace, docker }) => {
+      const service = new ContainerService("minio", name, docker);
 
-      builder
+      service
         .withName(`${workspace}_${name}`)
         .withImage(image)
         .withPort(9000, port)
@@ -82,10 +79,10 @@ export const minio = defineService<Options>((config = {}) => {
         .withCmd(["server", "/data", "--console-address", `:${9001}`]);
 
       if (defaultBucket) {
-        builder.withEnv("MINIO_DEFAULT_BUCKETS", defaultBucket);
+        service.withEnv("MINIO_DEFAULT_BUCKETS", defaultBucket);
       }
 
-      return new ContainerService("minio", name, builder);
+      return service;
     },
     metadata: () => {
       const s3Endpoint = `http://localhost:${port}`;
@@ -121,4 +118,3 @@ export const minio = defineService<Options>((config = {}) => {
     },
   };
 });
-

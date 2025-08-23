@@ -57,11 +57,10 @@ export const mysql = defineService<Options>((config = {}) => {
     description:
       "The world's most popular open-source relational database management system.",
     tags: ["database"],
-    create: async ({ workspace }) => {
-      const docker = new Dockerode();
-      const builder = new ContainerBuilder(docker);
+    create: async ({ workspace, docker }) => {
+      const service = new ContainerService("mysql", name, docker);
 
-      builder
+      service
         .withName(`${workspace}_${name}`)
         .withImage(image)
         .withPort(3306, port)
@@ -71,7 +70,7 @@ export const mysql = defineService<Options>((config = {}) => {
         .withEnv("MYSQL_PASSWORD", password)
         .withVolumeMount("data", "/var/lib/mysql");
 
-      return new ContainerService("mysql", name, builder);
+      return service;
     },
     metadata: () => [
       {
@@ -87,3 +86,4 @@ export const mysql = defineService<Options>((config = {}) => {
     ],
   };
 });
+

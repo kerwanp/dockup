@@ -65,17 +65,18 @@ export const sonarqube = defineService<Options>((config = {}) => {
     description:
       "Code quality and security analysis platform for continuous code inspection.",
     tags: ["code-quality", "security", "analysis"],
-    create: async ({ workspace }) => {
-      const docker = new Dockerode();
-      const builder = new ContainerBuilder(docker);
+    create: async ({ workspace, docker }) => {
+      const service = new ContainerService("sonarqube", name, docker);
 
-      builder
+      service
         .withName(`${workspace}_${name}`)
         .withImage(image)
         .withPort(9000, port)
-        .withEnv("SONAR_JDBC_URL", database === "h2" 
-          ? "jdbc:h2:mem:sonar" 
-          : `jdbc:postgresql://${workspace}_postgresql:5432/sonar`
+        .withEnv(
+          "SONAR_JDBC_URL",
+          database === "h2"
+            ? "jdbc:h2:mem:sonar"
+            : `jdbc:postgresql://${workspace}_postgresql:5432/sonar`,
         )
         .withEnv("SONAR_JDBC_USERNAME", database === "h2" ? "sonar" : "sonar")
         .withEnv("SONAR_JDBC_PASSWORD", database === "h2" ? "sonar" : "sonar")
@@ -85,7 +86,7 @@ export const sonarqube = defineService<Options>((config = {}) => {
         .withVolumeMount("logs", "/opt/sonarqube/logs")
         .withVolumeMount("extensions", "/opt/sonarqube/extensions");
 
-      return new ContainerService("sonarqube", name, builder);
+      return service;
     },
     metadata: () => [
       {

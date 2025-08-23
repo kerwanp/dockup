@@ -1,5 +1,3 @@
-import Dockerode from "dockerode";
-import { ContainerBuilder } from "../container/container_builder.js";
 import { BaseConfig, defineService } from "./define_service.js";
 import { ContainerService } from "../container/container_service.js";
 
@@ -50,25 +48,27 @@ export const adminer = defineService<Options>((config = {}) => {
     description:
       "Full-featured database management tool written in PHP, supporting MySQL, MariaDB, PostgreSQL, SQLite, MS SQL, and more.",
     tags: ["database", "admin", "multi-database", "web"],
-    create: async ({ workspace }) => {
-      const docker = new Dockerode();
-      const builder = new ContainerBuilder(docker);
+    create: async ({ workspace, docker }) => {
+      const service = new ContainerService("adminer", name, docker);
 
-      builder
+      service
         .withName(`${workspace}_${name}`)
         .withImage(image)
         .withPort(8080, port)
         .withEnv("ADMINER_DESIGN", design);
 
       if (defaultServer) {
-        builder.withEnv("ADMINER_DEFAULT_SERVER", `${workspace}_${defaultServer}`);
+        service.withEnv(
+          "ADMINER_DEFAULT_SERVER",
+          `${workspace}_${defaultServer}`,
+        );
       }
 
       if (plugins) {
-        builder.withEnv("ADMINER_PLUGINS", plugins);
+        service.withEnv("ADMINER_PLUGINS", plugins);
       }
 
-      return new ContainerService("adminer", name, builder);
+      return service;
     },
     metadata: () => {
       const metadata = [

@@ -1,5 +1,3 @@
-import Dockerode from "dockerode";
-import { ContainerBuilder } from "../container/container_builder.js";
 import { BaseConfig, defineService } from "./define_service.js";
 import { ContainerService } from "../container/container_service.js";
 
@@ -66,30 +64,32 @@ export const grafana = defineService<Options>((config = {}) => {
     description:
       "Open source analytics and interactive visualization platform for metrics and logs.",
     tags: ["monitoring", "visualization", "metrics"],
-    create: async ({ workspace }) => {
-      const docker = new Dockerode();
-      const builder = new ContainerBuilder(docker);
+    create: async ({ workspace, docker }) => {
+      const service = new ContainerService("grafana", name, docker);
 
-      builder
+      service
         .withName(`${workspace}_${name}`)
         .withImage(image)
         .withPort(3000, port)
         .withEnv("GF_SECURITY_ADMIN_USER", adminUser)
         .withEnv("GF_SECURITY_ADMIN_PASSWORD", adminPassword)
-        .withEnv("GF_AUTH_ANONYMOUS_ENABLED", anonymousAccess ? "true" : "false")
+        .withEnv(
+          "GF_AUTH_ANONYMOUS_ENABLED",
+          anonymousAccess ? "true" : "false",
+        )
         .withEnv("GF_USERS_DEFAULT_THEME", theme)
         .withVolumeMount("data", "/var/lib/grafana")
         .withVolumeMount("provisioning", "/etc/grafana/provisioning");
 
       if (plugins) {
-        builder.withEnv("GF_INSTALL_PLUGINS", plugins);
+        service.withEnv("GF_INSTALL_PLUGINS", plugins);
       }
 
       if (anonymousAccess) {
-        builder.withEnv("GF_AUTH_ANONYMOUS_ORG_ROLE", "Viewer");
+        service.withEnv("GF_AUTH_ANONYMOUS_ORG_ROLE", "Viewer");
       }
 
-      return new ContainerService("grafana", name, builder);
+      return service;
     },
     metadata: () => [
       {

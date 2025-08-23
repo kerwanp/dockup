@@ -65,13 +65,12 @@ export const keycloak = defineService<Options>((config = {}) => {
     description:
       "Open source identity and access management for modern applications and services.",
     tags: ["auth", "identity", "security"],
-    create: async ({ workspace }) => {
-      const docker = new Dockerode();
-      const builder = new ContainerBuilder(docker);
+    create: async ({ workspace, docker }) => {
+      const service = new ContainerService("keycload", name, docker);
 
       const cmd = ["start", devMode ? "--dev" : "--optimized"];
 
-      builder
+      service
         .withName(`${workspace}_${name}`)
         .withImage(image)
         .withPort(8080, port)
@@ -84,7 +83,7 @@ export const keycloak = defineService<Options>((config = {}) => {
         .withCmd(cmd);
 
       if (realmImportPath) {
-        builder.merge({
+        service.with({
           HostConfig: {
             Binds: [`${realmImportPath}:/opt/keycloak/data/import:ro`],
           },
@@ -92,7 +91,7 @@ export const keycloak = defineService<Options>((config = {}) => {
         cmd.push("--import-realm");
       }
 
-      return new ContainerService("keycloak", name, builder);
+      return service;
     },
     metadata: () => [
       {
@@ -113,3 +112,4 @@ export const keycloak = defineService<Options>((config = {}) => {
     ],
   };
 });
+

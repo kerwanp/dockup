@@ -21,9 +21,7 @@ export default defineCommand({
       if (!metadata) continue;
 
       const output = [
-        chalk.underline(
-          chalk.bold(`${service.name}/${service.instance} metadata`),
-        ),
+        chalk.underline(chalk.bold(`${service.name}/${service.id} metadata`)),
         "",
       ];
 

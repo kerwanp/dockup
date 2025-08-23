@@ -1,5 +1,3 @@
-import Dockerode from "dockerode";
-import { ContainerBuilder } from "../container/container_builder.js";
 import { BaseConfig, defineService } from "./define_service.js";
 import { ContainerService } from "../container/container_service.js";
 
@@ -65,15 +63,17 @@ export const nexus = defineService<Options>((config = {}) => {
     description:
       "Universal artifact repository manager supporting Maven, npm, Docker, and more.",
     tags: ["repository", "artifacts", "maven", "npm"],
-    create: async ({ workspace }) => {
-      const docker = new Dockerode();
-      const builder = new ContainerBuilder(docker);
+    create: async ({ workspace, docker }) => {
+      const service = new ContainerService("nexus", name, docker);
 
-      builder
+      service
         .withName(`${workspace}_${name}`)
         .withImage(image)
         .withPort(8081, port)
-        .withEnv("INSTALL4J_ADD_VM_PARAMS", `-Xms${javaMaxHeap} -Xmx${javaMaxHeap} -XX:MaxDirectMemorySize=${javaMaxDirectMemory}`)
+        .withEnv(
+          "INSTALL4J_ADD_VM_PARAMS",
+          `-Xms${javaMaxHeap} -Xmx${javaMaxHeap} -XX:MaxDirectMemorySize=${javaMaxDirectMemory}`,
+        )
         .withEnv("NEXUS_SECURITY_RANDOMPASSWORD", "false")
         .withVolumeMount("data", "/nexus-data");
 
@@ -84,12 +84,13 @@ export const nexus = defineService<Options>((config = {}) => {
         echo "nexus.security.anonymous.enabled=${anonymousAccess}" >> /nexus-data/etc/nexus.properties
       `;
 
-      builder.withCmd([
-        "sh", "-c", 
-        `echo '${initScript}' > /tmp/init.sh && chmod +x /tmp/init.sh && /tmp/init.sh && /opt/sonatype/nexus/bin/nexus run`
+      service.withCmd([
+        "sh",
+        "-c",
+        `echo '${initScript}' > /tmp/init.sh && chmod +x /tmp/init.sh && /tmp/init.sh && /opt/sonatype/nexus/bin/nexus run`,
       ]);
 
-      return new ContainerService("nexus", name, builder);
+      return service;
     },
     metadata: () => [
       {

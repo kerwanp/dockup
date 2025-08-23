@@ -1,5 +1,3 @@
-import Dockerode from "dockerode";
-import { ContainerBuilder } from "../container/container_builder.js";
 import { BaseConfig, defineService } from "./define_service.js";
 import { ContainerService } from "../container/container_service.js";
 
@@ -66,11 +64,10 @@ export const mongodb = defineService<Options>((config = {}) => {
     description:
       "A document-oriented NoSQL database designed for scalability and flexibility.",
     tags: ["database", "nosql"],
-    create: async ({ workspace }) => {
-      const docker = new Dockerode();
-      const builder = new ContainerBuilder(docker);
+    create: async ({ workspace, docker }) => {
+      const service = new ContainerService("mongodb", name, docker);
 
-      builder
+      service
         .withName(`${workspace}_${name}`)
         .withImage(image)
         .withPort(27017, port)
@@ -78,14 +75,14 @@ export const mongodb = defineService<Options>((config = {}) => {
         .withVolumeMount("configdb", "/data/configdb");
 
       if (auth) {
-        builder
+        service
           .withEnv("MONGO_INITDB_ROOT_USERNAME", username)
           .withEnv("MONGO_INITDB_ROOT_PASSWORD", password)
           .withEnv("MONGO_INITDB_DATABASE", database);
       }
 
       if (replicaSet) {
-        builder.withCmd([
+        service.withCmd([
           "mongod",
           "--replSet",
           replicaSet,
@@ -94,7 +91,7 @@ export const mongodb = defineService<Options>((config = {}) => {
         ]);
       }
 
-      return new ContainerService("mongodb", name, builder);
+      return service;
     },
     metadata: () => {
       const authString = auth ? `${username}:${password}@` : "";
@@ -118,3 +115,4 @@ export const mongodb = defineService<Options>((config = {}) => {
     },
   };
 });
+

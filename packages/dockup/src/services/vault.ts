@@ -1,5 +1,3 @@
-import Dockerode from "dockerode";
-import { ContainerBuilder } from "../container/container_builder.js";
 import { BaseConfig, defineService } from "./define_service.js";
 import { ContainerService } from "../container/container_service.js";
 
@@ -58,11 +56,10 @@ export const vault = defineService<Options>((config = {}) => {
     description:
       "Secure secrets management and data protection for applications and infrastructure.",
     tags: ["security", "secrets", "encryption"],
-    create: async ({ workspace }) => {
-      const docker = new Dockerode();
-      const builder = new ContainerBuilder(docker);
+    create: async ({ workspace, docker }) => {
+      const service = new ContainerService("vault", name, docker);
 
-      builder
+      service
         .withName(`${workspace}_${name}`)
         .withImage(image)
         .withPort(8200, port)
@@ -70,22 +67,22 @@ export const vault = defineService<Options>((config = {}) => {
         .withEnv("VAULT_API_ADDR", apiAddr);
 
       if (devMode) {
-        builder
+        service
           .withEnv("VAULT_DEV_ROOT_TOKEN_ID", rootToken)
           .withEnv("VAULT_DEV_LISTEN_ADDRESS", "0.0.0.0:8200")
           .withCmd(["server", "-dev"]);
       } else {
-        builder
+        service
           .withVolumeMount("data", "/vault/data")
           .withVolumeMount("config", "/vault/config")
           .withCmd(["server"]);
       }
 
       if (!ui) {
-        builder.withEnv("VAULT_UI", "false");
+        service.withEnv("VAULT_UI", "false");
       }
 
-      return new ContainerService("vault", name, builder);
+      return service;
     },
     metadata: () => {
       const metadata = [
@@ -118,3 +115,4 @@ export const vault = defineService<Options>((config = {}) => {
     },
   };
 });
+

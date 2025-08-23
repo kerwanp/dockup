@@ -6,7 +6,7 @@ export class ServiceNotFoundException extends Exception {
 
   constructor(id: string, available?: Service[]) {
     if (available) {
-      const msg = available.map((s) => s.instance).join(", ");
+      const msg = available.map((s) => s.id).join(", ");
       super(
         `Could not find service ${id} make sure to use the service name. (Available: ${msg})`,
       );

@@ -1,5 +1,3 @@
-import Dockerode from "dockerode";
-import { ContainerBuilder } from "../container/container_builder.js";
 import { BaseConfig, defineService } from "./define_service.js";
 import { ContainerService } from "../container/container_service.js";
 
@@ -83,32 +81,34 @@ export const gitlab = defineService<Options>((config = {}) => {
     description:
       "Complete DevOps platform with Git repository management, CI/CD, and more.",
     tags: ["git", "ci-cd", "devops", "repository"],
-    create: async ({ workspace }) => {
-      const docker = new Dockerode();
-      const builder = new ContainerBuilder(docker);
+    create: async ({ workspace, docker }) => {
+      const service = new ContainerService("gitlab", name, docker);
 
-      builder
+      service
         .withName(`${workspace}_${name}`)
         .withImage(actualImage)
         .withPort(80, port)
         .withPort(22, sshPort)
         .withPort(443, httpsPort)
-        .withEnv("GITLAB_OMNIBUS_CONFIG", `
+        .withEnv(
+          "GITLAB_OMNIBUS_CONFIG",
+          `
           external_url '${externalUrl}'
           gitlab_rails['initial_root_password'] = '${rootPassword}'
           gitlab_rails['time_zone'] = '${timezone}'
           ${registry ? "registry_external_url 'http://localhost:5050'" : ""}
           ${registry ? "gitlab_rails['registry_enabled'] = true" : ""}
-        `)
+        `,
+        )
         .withVolumeMount("config", "/etc/gitlab")
         .withVolumeMount("logs", "/var/log/gitlab")
         .withVolumeMount("data", "/var/opt/gitlab");
 
       if (registry) {
-        builder.withPort(5050, 5050); // Registry port
+        service.withPort(5050, 5050); // Registry port
       }
 
-      return new ContainerService("gitlab", name, builder);
+      return service;
     },
     metadata: () => {
       const metadata = [

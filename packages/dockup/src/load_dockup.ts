@@ -50,7 +50,7 @@ export async function loadDockup({
   return {
     services,
     service(id) {
-      const output = services.find((service) => service.instance === id);
+      const output = services.find((service) => service.id === id);
       if (!output) throw new ServiceNotFoundException(id);
       return output;
     },

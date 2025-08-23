@@ -7,7 +7,6 @@ export { mongodb } from "../src/services/mongodb.js";
 export { minio } from "../src/services/minio.js";
 export { elasticsearch } from "../src/services/elasticsearch.js";
 export { localstack } from "../src/services/localstack.js";
-export { kafka } from "../src/services/kafka.js";
 export { nginx } from "../src/services/nginx.js";
 export { memcached } from "../src/services/memcached.js";
 export { keycloak } from "../src/services/keycloak.js";

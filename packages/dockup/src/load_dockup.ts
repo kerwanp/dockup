@@ -1,6 +1,7 @@
 import { ResolvedDockupConfig } from "./config/types.js";
 import { Service } from "./services/service.js";
 import { ServiceNotFoundException } from "./exceptions/service_not_found_exception.js";
+import Dockerode from "dockerode";
 
 export interface Dockup {
   services: Service[];
@@ -39,10 +40,13 @@ export interface Dockup {
 export async function loadDockup({
   config,
 }: ResolvedDockupConfig): Promise<Dockup> {
+  const docker = new Dockerode(config.docker);
+
   const services = await Promise.all(
     config.services.map((service) =>
       service.create({
         workspace: config.name,
+        docker,
       }),
     ),
   );

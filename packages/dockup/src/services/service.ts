@@ -74,6 +74,7 @@ export abstract class Service extends Hookable<ServiceEvents> {
   abstract start(): Promise<void>;
   abstract restart(): Promise<void>;
   abstract stop(): Promise<void>;
+  abstract remove(): Promise<void>;
 
   updateStatus(status: ServiceStatus, err?: unknown) {
     this.status = status;

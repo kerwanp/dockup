@@ -4,6 +4,7 @@ import add from "./add.js";
 import init from "./init.js";
 import { steps } from "../steps.js";
 import metadata from "./metadata.js";
+import rm from "./rm.js";
 
 export default defineCommand({
   meta: {
@@ -15,6 +16,7 @@ export default defineCommand({
     add,
     init,
     metadata,
+    rm,
   },
   async run({ args }) {
     if (args._.length !== 0) return;

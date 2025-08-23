@@ -1,6 +1,6 @@
 import { useMemo } from "react";
 import { ServiceStatus } from "../../../services/service.js";
-import { colors } from "../../colors.js";
+import { colors } from "../../utils.js";
 import { Box, Text } from "ink";
 
 export const StatusBadge = ({ status }: { status: ServiceStatus }) => {

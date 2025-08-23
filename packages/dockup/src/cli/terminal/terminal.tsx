@@ -1,10 +1,10 @@
 import { Box, render, useInput } from "ink";
 import { ContainerLogs } from "./components/service-logs.js";
 import { ServicesList } from "./components/services-list.js";
-import { useState } from "react";
+import { useMemo, useState } from "react";
 import { useDimensions } from "./hooks/use_dimensions.js";
 import { MouseProvider } from "@zenobius/ink-mouse";
-import { colors } from "../colors.js";
+import { colors } from "../utils.js";
 import { Dockup } from "../../load_dockup.js";
 
 export const Terminal = ({ dockup }: { dockup: Dockup }) => {
@@ -16,6 +16,10 @@ export const Terminal = ({ dockup }: { dockup: Dockup }) => {
       process.emit("SIGINT", "SIGINT");
     }
   });
+
+  const logsHeight = useMemo(() => {
+    return rows - 7 - dockup.services.length;
+  }, [rows]);
 
   return (
     <MouseProvider>
@@ -34,7 +38,7 @@ export const Terminal = ({ dockup }: { dockup: Dockup }) => {
         {dockup.services.map((service, index) => (
           <ContainerLogs
             key={index}
-            height={rows - 10}
+            height={logsHeight}
             display={selected === index ? "flex" : "none"}
             service={service}
           />

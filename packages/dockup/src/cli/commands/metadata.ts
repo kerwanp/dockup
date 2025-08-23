@@ -1,7 +1,7 @@
-import { intro, log } from "@clack/prompts";
+import { log } from "@clack/prompts";
 import chalk from "chalk";
 import { defineCommand } from "citty";
-import { colors } from "../colors.js";
+import { colors, prompts } from "../utils.js";
 import { steps } from "../steps.js";
 import { loadDockup } from "../../load_dockup.js";
 
@@ -11,7 +11,7 @@ export default defineCommand({
     description: "Retrieve service metadata",
   },
   async run() {
-    intro(chalk.bgHex(colors.primary)(" dockup metadata "));
+    prompts.intro("dockup metadata");
 
     const config = await steps.ensureConfig();
     const dockup = await loadDockup(config);

@@ -2,9 +2,8 @@ import { defineCommand } from "citty";
 
 import * as services from "../../../modules/services.js";
 import { addServices } from "../../config/add_service.js";
-import { intro, log } from "@clack/prompts";
-import chalk from "chalk";
-import { colors } from "../colors.js";
+import { log } from "@clack/prompts";
+import { prompts } from "../utils.js";
 import { steps } from "../steps.js";
 
 export default defineCommand({
@@ -20,7 +19,7 @@ export default defineCommand({
     },
   },
   async run({ args }) {
-    intro(chalk.bgHex(colors.primary)(" dockup add "));
+    prompts.intro("dockup add");
 
     await steps.ensureConfig(false);
 

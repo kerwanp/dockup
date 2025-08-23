@@ -1,6 +1,6 @@
 import { Box, DOMElement, Text, useInput } from "ink";
 import { ComponentProps, useEffect, useMemo, useRef, useState } from "react";
-import { colors } from "../../colors.js";
+import { colors } from "../../utils.js";
 import { Service, ServiceStatus } from "../../../services/service.js";
 import { Help } from "./help.js";
 import { StatusBadge } from "./status-badge.js";

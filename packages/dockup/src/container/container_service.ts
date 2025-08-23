@@ -69,6 +69,20 @@ export class ContainerService extends Service {
     }
   }
 
+  async remove(): Promise<void> {
+    await this.init();
+    const info = await this.container!.inspect();
+
+    await this.container!.remove();
+
+    if (info.HostConfig.Mounts) {
+      for (const mount of info.HostConfig.Mounts) {
+        const volume = this.docker.getVolume(mount.Source);
+        await volume.remove({ force: true });
+      }
+    }
+  }
+
   protected async attachStream() {
     const stream = await this.container!.attach({
       stream: true,

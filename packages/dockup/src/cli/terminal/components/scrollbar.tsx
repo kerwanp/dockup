@@ -61,7 +61,7 @@ export const Scrollbar = ({
   const ref = useRef<DOMElement>(null);
 
   const lines = transformLogs(logs, columns - 4).split(/\r\n|\r|\n/);
-  const slices = lines.slice(position, height + position - 2);
+  const slices = lines.slice(position, height + position - 1);
   const max = Math.max(0, lines.length - height);
 
   const scrollup = useCallback(() => {

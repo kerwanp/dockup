@@ -1,8 +1,6 @@
-import { intro } from "@clack/prompts";
 import { defineCommand } from "citty";
 import { steps } from "../steps.js";
-import { colors } from "../colors.js";
-import chalk from "chalk";
+import { prompts } from "../utils.js";
 
 export default defineCommand({
   meta: {
@@ -10,7 +8,7 @@ export default defineCommand({
     description: "Initialize Dockup configuration",
   },
   async run() {
-    intro(chalk.bgHex(colors.primary)(" dockup init "));
+    prompts.intro("dockup init");
 
     await steps.init(true);
   },

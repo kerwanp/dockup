@@ -1,17 +1,66 @@
-import { confirm, multiselect, spinner } from "@clack/prompts";
+import { confirm, log, multiselect, select, spinner } from "@clack/prompts";
 import * as services from "../../modules/services.js";
 import { loadConfig } from "../config/load_config.js";
-import { addDependency } from "nypm";
+import { addDependency, PackageManagerName } from "nypm";
 import { createConfig } from "../config/create_config.js";
 import { loadDockup } from "../load_dockup.js";
 import { startTerminal } from "./terminal/terminal.js";
 import { addServices } from "../config/add_service.js";
+import { isDockerInstalled, isGloballyInstalled } from "./utils.js";
 
 export const steps = {
   async init(selectService = true) {
-    const s = spinner();
+    if (!(await isDockerInstalled())) {
+      log.error(
+        "Docker is required to run Dockup: https://dockup.dev/docs#docker",
+      );
+      process.exit(0);
+    }
+
+    await this.installGlobally();
+    await this.installLocally();
+
+    let ids: string[] | undefined;
+    if (selectService) {
+      ids = await this.selectServices();
+    }
 
     await createConfig();
+
+    if (ids) {
+      await addServices(...ids);
+    }
+
+    return loadConfig();
+  },
+
+  async installGlobally() {
+    if (await isGloballyInstalled()) {
+      return;
+    }
+
+    const pm = await this.selectPackageManager(
+      "What package manager do you want to use to install Dockup globally?",
+      "npm",
+    );
+
+    if (typeof pm === "symbol") process.exit(0);
+
+    const s = spinner();
+
+    s.start(`Installing 'dockup' globally using '${pm}'`);
+
+    await addDependency("dockup", {
+      packageManager: pm,
+      global: true,
+      silent: true,
+    });
+
+    s.stop(`Installed 'dockup' globally using '${pm}'`);
+  },
+
+  async installLocally() {
+    const s = spinner();
 
     s.start("Installing dependencies");
 
@@ -20,14 +69,26 @@ export const steps = {
       silent: true,
     });
 
-    s.stop("Dependencies installed");
+    s.stop("Installed dependencies");
+  },
 
-    if (selectService) {
-      const ids = await this.selectServices();
-      await addServices(...ids);
-    }
+  async selectPackageManager(
+    title = "What package manager do you want to use?",
+    recommended?: PackageManagerName,
+  ) {
+    const options: PackageManagerName[] = ["npm", "yarn", "bun", "pnpm"];
+    const result = await select({
+      message: title,
+      options: options.map((pm) => ({
+        label: pm,
+        hint: recommended === pm ? "Recommended" : undefined,
+        value: pm,
+      })),
+    });
 
-    return loadConfig();
+    if (typeof result === "symbol") process.exit(0);
+
+    return result;
   },
 
   async selectServices() {

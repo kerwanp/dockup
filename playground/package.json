@@ -1,7 +1,0 @@
-{
-  "name": "playground",
-  "packageManager": "yarn@4.9.2",
-  "dependencies": {
-    "dockup": "workspace:^"
-  }
-}

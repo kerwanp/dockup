@@ -4494,6 +4494,7 @@ __metadata:
     magicast: "npm:^0.3.5"
     nypm: "npm:^0.6.1"
     pathe: "npm:^2.0.3"
+    pkg-types: "npm:^2.3.0"
     prettier: "npm:^3.6.2"
     react: "npm:^19.1.1"
     ts-node: "npm:^10.9.2"
@@ -8828,7 +8829,7 @@ __metadata:
   languageName: node
   linkType: hard
 
-"pkg-types@npm:^2.2.0":
+"pkg-types@npm:^2.2.0, pkg-types@npm:^2.3.0":
   version: 2.3.0
   resolution: "pkg-types@npm:2.3.0"
   dependencies:
@@ -8838,14 +8839,6 @@ __metadata:
   checksum: 10c0/d2bbddc5b81bd4741e1529c08ef4c5f1542bbdcf63498b73b8e1d84cff71806d1b8b1577800549bb569cb7aa20056257677b979bff48c97967cba7e64f72ae12
   languageName: node
   linkType: hard
-
-"playground@workspace:playground":
-  version: 0.0.0-use.local
-  resolution: "playground@workspace:playground"
-  dependencies:
-    dockup: "workspace:^"
-  languageName: unknown
-  linkType: soft
 
 "pluralize@npm:^8.0.0":
   version: 8.0.0

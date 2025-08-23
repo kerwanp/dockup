@@ -1,7 +1,7 @@
 import { defineConfig } from "dockup/config";
 
-import { vault, redis, rabbitmq } from "dockup/services";
+import { redis, rabbitmq, vault } from "dockup/services";
 
 export default defineConfig({
-  services: [vault(), redis(), rabbitmq()],
+  services: [redis(), rabbitmq(), vault()],
 });

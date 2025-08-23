@@ -1,7 +1,6 @@
 import { Separator } from "@/components/separator";
 import { MoveLeft } from "lucide-react";
 import Link from "next/link";
-import { ServiceDefinition } from "dockup";
 import * as services from "dockup/services";
 import { notFound } from "next/navigation";
 import { createGenerator } from "fumadocs-typescript";
@@ -10,6 +9,7 @@ import { CodeBlock, Pre } from "fumadocs-ui/components/codeblock";
 import { highlight } from "fumadocs-core/highlight";
 import { Badge } from "@/components/badge";
 import { Callout } from "fumadocs-ui/components/callout";
+import { getRegistryService } from "@/lib/registry";
 
 const generator = createGenerator();
 
@@ -20,14 +20,11 @@ export default async function Page({
 }) {
   const { serviceId } = await params;
 
-  const service = services[
-    serviceId as keyof typeof services
-  ] as () => ServiceDefinition;
+  const service = getRegistryService(serviceId);
 
   if (!service) notFound();
 
-  const instance = service();
-  const metadata = instance.metadata?.();
+  const metadata = service.metadata?.();
 
   const configCode = await highlight(
     [
@@ -65,10 +62,10 @@ export default async function Page({
         Back to registry
       </Link>
       <div>
-        <h1 className="text-5xl font-bold mb-3">{instance.name}</h1>
-        <p className="text-muted-foreground mb-6">{instance.description}</p>
+        <h1 className="text-5xl font-bold mb-3">{service.name}</h1>
+        <p className="text-muted-foreground mb-6">{service.description}</p>
         <div className="flex gap-2">
-          {instance.tags!.map((tag) => (
+          {service.tags!.map((tag) => (
             <Badge key={tag}>{tag}</Badge>
           ))}
         </div>

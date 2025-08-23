@@ -11,9 +11,12 @@ import { container } from "dockup/services";
 
 export default defineConfig({
   services: [
-    container({ name: "database", image: "postgres:latest" })
-      .withEnv("POSTGRES_USER", "dockup")
-      .withEnv("POSTGRES_DB", "dockup"),
+    container({
+      name: "database",
+      image: "postgres:latest",
+      extend: (container) =>
+        container.withEnv("POSTGRES_USER", "dockup").withPort(5432),
+    }),
   ],
 });
 ```

@@ -1,7 +1,9 @@
 import { ServiceCard } from "@/components/service-card";
-import * as services from "dockup/services";
+import { getRegistryServices } from "@/lib/registry";
 
 export default function Page() {
+  const services = getRegistryServices();
+
   return (
     <main className="container mx-auto py-12">
       <div className="mb-8">
@@ -10,14 +12,13 @@ export default function Page() {
 
       <div className="grid grid-cols-4 gap-4">
         {Object.entries(services).map(([id, service]) => {
-          const instance = service();
           return (
             <ServiceCard
               key={id}
               id={id}
-              name={instance.name!}
-              description={instance.description!}
-              tags={instance.tags!}
+              name={service.name!}
+              description={service.description!}
+              tags={service.tags!}
             />
           );
         })}

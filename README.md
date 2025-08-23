@@ -2,7 +2,9 @@
 <br/>
 
 <p align="center">
-    <img width="300" alt="Dockup" src=".github/images/logo.png">
+    <a href="https://dockup.dev">
+      <img width="300" alt="Dockup" src=".github/images/logo.png">
+    </a>
 </p>
 
 ### Stupidly easy development environment

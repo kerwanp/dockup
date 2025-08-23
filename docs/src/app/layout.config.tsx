@@ -1,4 +1,3 @@
-import { LogoSvg } from "@/components/svgs/logo";
 import { GithubInfo } from "fumadocs-ui/components/github-info";
 import type { BaseLayoutProps, LinkItemType } from "fumadocs-ui/layouts/shared";
 import { AlbumIcon, Package } from "lucide-react";

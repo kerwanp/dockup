@@ -12,6 +12,7 @@
   "devDependencies": {
     "@babel/types": "^7.28.2",
     "dockup": "workspace:^",
+    "node-gyp": "^11.4.1",
     "prettier": "^3.6.2",
     "turbo": "^2.5.5",
     "typescript": "5.8.3"

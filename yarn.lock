@@ -8380,7 +8380,7 @@ __metadata:
   languageName: node
   linkType: hard
 
-"node-gyp@npm:latest":
+"node-gyp@npm:^11.4.1, node-gyp@npm:latest":
   version: 11.4.1
   resolution: "node-gyp@npm:11.4.1"
   dependencies:
@@ -11029,6 +11029,7 @@ __metadata:
   dependencies:
     "@babel/types": "npm:^7.28.2"
     dockup: "workspace:^"
+    node-gyp: "npm:^11.4.1"
     prettier: "npm:^3.6.2"
     turbo: "npm:^2.5.5"
     typescript: "npm:5.8.3"

@@ -1,7 +1,5 @@
 import { defineCommand } from "citty";
-import { loadConfig } from "../../config/load_config.js";
-import { loadDockup } from "../../load_dockup.js";
-import { startTerminal } from "../terminal/terminal.js";
+import { steps } from "../steps.js";
 
 export default defineCommand({
   meta: {
@@ -9,10 +7,6 @@ export default defineCommand({
     description: "Starts the development environment",
   },
   async run() {
-    const config = await loadConfig();
-
-    const dockup = await loadDockup(config);
-
-    await startTerminal(dockup);
+    await steps.startTerminal();
   },
 });

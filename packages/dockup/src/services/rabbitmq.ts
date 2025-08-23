@@ -44,6 +44,18 @@ export interface Options extends BaseConfig {
 }
 
 export const rabbitmq = defineService<Options>((config = {}) => {
+  const {
+    name = "rabbitmq",
+    management = true,
+    image = management ? "rabbitmq:management" : "rabbitmq:latest",
+    user = "guest",
+    password = "guest",
+    vhost = "/",
+    port = 5672,
+  } = config;
+
+  const managementPort = typeof management === "number" ? management : 15672;
+
   return {
     type: "container",
     name: "RabbitMQ",
@@ -52,17 +64,6 @@ export const rabbitmq = defineService<Options>((config = {}) => {
     tags: ["messaging"],
     async create({ workspace }) {
       const docker = new Dockerode();
-      const {
-        name = "rabbitmq",
-        management = true,
-        image = management ? "rabbitmq:management" : "rabbitmq:latest",
-        user = "guest",
-        password = "guest",
-        vhost = "/",
-        port = 5672,
-      } = config;
-
-      console.log(config, port);
 
       const container = new ContainerBuilder(docker);
 
@@ -74,16 +75,26 @@ export const rabbitmq = defineService<Options>((config = {}) => {
         .withEnv("RABBITMQ_DEFAULT_PASS", password)
         .withEnv("RABBITMQ_DEFAULT_VHOST", vhost);
 
-      console.log(container.options.HostConfig?.PortBindings);
-
       if (management) {
-        container.withPort(
-          15672,
-          typeof management === "number" ? management : 15672,
-        );
+        container.withPort(15672, managementPort);
       }
 
       return new ContainerService("rabbitmq", name, container);
+    },
+    metadata: () => {
+      return [
+        {
+          label: "Connection URL",
+          description: "Can be used to connect to the RabbitMQ instance",
+          value: `amqp://${user}:${password}@localhost:${port}${vhost}`,
+        },
+        {
+          label: "Management URL",
+          description:
+            "Can be used to access the management dashboard when enabled",
+          value: `http://localhost:${managementPort}`,
+        },
+      ];
     },
   };
 });

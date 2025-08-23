@@ -4,12 +4,19 @@ export type ServiceFn = () => Promise<void>;
 
 export type ServiceType = "container";
 
+export type ServiceMetadata = {
+  label: string;
+  description: string;
+  value: string;
+};
+
 export type ServiceDefinition = {
   type: ServiceType;
   name?: string;
   description?: string;
   tags?: string[];
   create: (ctx: Context) => Promise<Service>;
+  metadata?: () => ServiceMetadata[];
 };
 
 export type Context = {

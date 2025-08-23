@@ -15,11 +15,32 @@ export type ServiceEvents = {
   status: (status: ServiceStatus) => void;
 };
 
-export abstract class Service extends Hookable<ServiceEvents> {
+export type ServiceOptions = {
   /**
    * Kind of service.
    *
    * @example "container"
+   */
+  kind: string;
+
+  /**
+   * Service name.
+   *
+   * @example "postgresql"
+   */
+  name: string;
+
+  /**
+   * Service instance name.
+   *
+   * @example "db-2"
+   */
+  instance: string;
+};
+
+export abstract class Service extends Hookable<ServiceEvents> {
+  /**
+   * Kind of service.
    */
   abstract kind: string;
 
@@ -30,15 +51,11 @@ export abstract class Service extends Hookable<ServiceEvents> {
 
   /**
    * Name of the service type.
-   *
-   * @example "postgresql"
    */
   name: string;
 
   /**
-   * Name of the service instance.
-   *
-   * @example "db-1"
+   * Service instance name.
    */
   instance: string;
 
@@ -65,5 +82,12 @@ export abstract class Service extends Hookable<ServiceEvents> {
     if (err) {
       this.logs.push(err instanceof Error ? err.stack : err, "utf8");
     }
+  }
+
+  /**
+   * Returns environment variables that can be used to access the service.
+   */
+  env(): Record<string, string> | undefined {
+    return;
   }
 }

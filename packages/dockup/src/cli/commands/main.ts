@@ -2,8 +2,8 @@ import { defineCommand } from "citty";
 import up from "./up.js";
 import add from "./add.js";
 import init from "./init.js";
-import { loadDockup } from "../../load_dockup.js";
-import { loadConfig } from "../../config/load_config.js";
+import { steps } from "../steps.js";
+import metadata from "./metadata.js";
 
 export default defineCommand({
   meta: {
@@ -14,12 +14,10 @@ export default defineCommand({
     up,
     add,
     init,
+    metadata,
   },
-  async run() {
-    const config = await loadConfig();
-
-    const dockup = await loadDockup(config);
-
-    // await startTerminal(dockup);
+  async run({ args }) {
+    if (args._.length !== 0) return;
+    await steps.startTerminal();
   },
 });

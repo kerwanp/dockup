@@ -1,8 +1,11 @@
 import { defineCommand } from "citty";
 
-import * as containers from "../../../modules/services.js";
+import * as services from "../../../modules/services.js";
 import { addServices } from "../../config/add_service.js";
 import { intro, log } from "@clack/prompts";
+import chalk from "chalk";
+import { colors } from "../colors.js";
+import { steps } from "../steps.js";
 
 export default defineCommand({
   meta: {
@@ -13,20 +16,31 @@ export default defineCommand({
     name: {
       type: "positional",
       description: "The service name from the registry",
+      required: false,
     },
   },
   async run({ args }) {
-    intro(" dockup add ");
+    intro(chalk.bgHex(colors.primary)(" dockup add "));
 
-    const container = containers[args.name as keyof typeof containers];
+    await steps.ensureConfig(false);
 
-    if (!container) {
-      throw new Error(
-        `Could not found '${args.name}' service. Check the registry at https://dockup.dev/registry`,
-      );
+    let ids: string[] = [];
+
+    if (args.name) {
+      const service = services[args.name as keyof typeof services];
+
+      if (!service) {
+        throw new Error(
+          `Could not found '${args.name}' service. Check the registry at https://dockup.dev/registry`,
+        );
+      }
+
+      ids.push(args.name);
+    } else {
+      ids = await steps.selectServices();
     }
 
-    const updated = await addServices(args.name);
+    const updated = await addServices(...ids);
 
     if (!updated) {
       throw new Error(

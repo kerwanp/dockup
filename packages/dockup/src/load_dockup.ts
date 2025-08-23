@@ -13,7 +13,9 @@ export async function loadDockup({
   config,
 }: ResolvedDockupConfig): Promise<Dockup> {
   const services = await Promise.all(
-    config.services.map((service) => service.create({ workspace: "dockup" })),
+    config.services.map((service) =>
+      service.create({ workspace: config.name }),
+    ),
   );
 
   return {

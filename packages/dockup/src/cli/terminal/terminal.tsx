@@ -1,16 +1,15 @@
-import { Box, render, useApp, useInput } from "ink";
+import { Box, render, useInput } from "ink";
 import { ContainerLogs } from "./components/service-logs.js";
 import { ServicesList } from "./components/services-list.js";
 import { useState } from "react";
 import { useDimensions } from "./hooks/use_dimensions.js";
 import { MouseProvider } from "@zenobius/ink-mouse";
-import { colors } from "./colors.js";
+import { colors } from "../colors.js";
 import { Dockup } from "../../load_dockup.js";
 
 export const Terminal = ({ dockup }: { dockup: Dockup }) => {
   const [columns, rows] = useDimensions();
   const [selected, setSelected] = useState(0);
-  const { exit } = useApp();
 
   useInput(async (input, key) => {
     if (input === "c" && key.ctrl) {

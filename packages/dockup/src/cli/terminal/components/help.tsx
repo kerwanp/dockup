@@ -1,6 +1,6 @@
 import { Box, Text } from "ink";
 import { ComponentProps } from "react";
-import { colors } from "../colors.js";
+import { colors } from "../../colors.js";
 
 export const Help = ({
   items,

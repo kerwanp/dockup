@@ -1,7 +1,7 @@
 {
   "name": "dockup",
   "type": "module",
-  "version": "0.0.0",
+  "version": "0.0.0-alpha.0",
   "repository": {
     "type": "git",
     "url": "git+https://github.com/kerwanp/dockup.git"
@@ -14,8 +14,6 @@
   "files": [
     "build",
     "!build/tests",
-    "!build/bin/schemas*",
-    "!build/bin/registry*",
     "!build/bin/test*"
   ],
   "scripts": {
@@ -53,9 +51,9 @@
   "packageManager": "yarn@4.9.2",
   "dependencies": {
     "@clack/prompts": "^0.11.0",
-    "@dockup/core": "workspace:*",
     "@zenobius/ink-mouse": "^1.0.3",
     "c12": "^3.2.0",
+    "chalk": "^5.6.0",
     "citty": "^0.1.6",
     "dockerode": "^4.0.7",
     "hookable": "^5.5.3",
@@ -69,14 +67,12 @@
   },
   "keywords": [
     "cli",
-    "ai",
-    "cursor",
-    "opencode",
-    "claude",
-    "copilot"
+    "docker",
+    "devops",
+    "environment"
   ],
   "publishConfig": {
     "access": "public",
-    "tag": "latest"
+    "tag": "alpha"
   }
 }

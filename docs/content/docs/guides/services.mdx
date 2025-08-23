@@ -1,0 +1,77 @@
+---
+title: Configure services
+description: Services allows you to run databases, message brokers, etc.
+---
+
+## Add services
+
+You can add new services by using the command-line:
+
+```bash
+dockup add <service>
+```
+
+This will update your `dockup.config.ts` file by adding the new service.
+
+```ts title="dockup.config.ts"
+import { defineConfig } from "dockup/config";
+import { postgresql } from "dockup/services";
+
+export default defineConfig({
+  services: [postgresql()],
+});
+```
+
+<Callout>
+
+You can find the list of available services and their configuration in the [registry](/registry).
+
+</Callout>
+
+## Configure services
+
+Each service accepts different options allowing you to configure its behaviour:
+
+```ts title="dockup.config.ts"
+import { defineConfig } from "dockup/config";
+import { rabbitmq, postgresql } from "dockup/services";
+
+export default defineConfig({
+  services: [
+    rabbitmq({
+      management: true, // Enable management dashboard
+    }),
+    postgresql({
+      image: "postgres:16", // Use a different Docker image
+    }),
+  ],
+});
+```
+
+<Callout>
+
+You can find the list of available services and their configuration in the [registry](/registry).
+
+</Callout>
+
+## Multiple instances
+
+Their are use cases where you want to run multiple instances of the same service. For this you can use the `name` option (defaults to the service name).
+
+```ts title="dockup.config.ts"
+import { defineConfig } from "dockup/config";
+import { postgresql } from "dockup/services";
+
+export default defineConfig({
+  services: [
+    postgresql({
+      name: "db-1",
+      port: 5432,
+    }),
+    postgresql({
+      name: "db-2",
+      port: 5433,
+    }),
+  ],
+});
+```

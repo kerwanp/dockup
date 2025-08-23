@@ -1,0 +1,75 @@
+---
+title: Quick start
+description: Getting started with Dockup
+icon: Rocket
+---
+
+## Introduction
+
+Dockup is a **CLI tool** for creating and managing development environments. You can run basically anything, Postgresql, Redis, MySQL, RabbitMQ, etc.
+
+It has been built with a focus on developer experience, anyone can get started without any DevOps experience.
+
+## Requirements
+
+### Docker
+
+Install Docker Desktop by following the [official documentation](https://docs.docker.com/engine/install/) for your platform:
+
+- [Mac](https://docs.docker.com/desktop/setup/install/mac-install/)
+- [Windows](https://docs.docker.com/desktop/setup/install/windows-install/)
+- [Linux](https://docs.docker.com/desktop/setup/install/linux/):
+  - [Ubuntu](https://docs.docker.com/desktop/setup/install/linux/ubuntu/)
+  - [Debian](https://docs.docker.com/desktop/setup/install/linux/debian/)
+  - [Fedora](https://docs.docker.com/desktop/setup/install/linux/fedora/)
+  - [Arch](https://docs.docker.com/desktop/setup/install/linux/arch/)
+  - [RHEL](https://docs.docker.com/desktop/setup/install/linux/rhel/)
+
+## Install
+
+### Global (recommended)
+
+Use your favorite package manager to install **Dockup** globally.
+
+```package-install
+npm i -g dockup
+```
+
+Then initialize **Dockup** inside your project, this will prompt what services you want to configure:
+
+```bash
+dockup init
+```
+
+You can now start your development environment:
+
+```bash
+dockup
+```
+
+### Remotely
+
+Initialize **Dockup** inside your project, this will prompt what services you want to configure:
+
+```package-install
+npx dockup init
+```
+
+<Callout>
+
+By using this method you will have to prefix every command and will make them slower depending on your package manager.
+
+</Callout>
+
+You can now start your development environment:
+
+```bash
+dockup
+```
+
+## What is Next?
+
+<Cards>
+  <Card title="Configure services" href="/docs/guides/services" />
+  <Card title="Registry" href="/registry" />
+</Cards>

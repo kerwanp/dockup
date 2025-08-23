@@ -1,0 +1,15 @@
+{
+  "root": true,
+  "title": "Dockup",
+  "description": "Your AI coding agent toolkit",
+  "icon": "Sparkles",
+  "pages": [
+    "---Introduction---",
+    "index",
+    "[Layers2][Registry](/registry)",
+    "---Guides---",
+    "guides/services",
+    "guides/custom-service",
+    "---Advanced---"
+  ]
+}

@@ -1,0 +1,29 @@
+{
+  "name": "workspace",
+  "private": true,
+  "license": "FSL-1.1-ALv2",
+  "scripts": {
+    "build": "turbo run build",
+    "dev": "turbo run dev",
+    "lint": "turbo run lint",
+    "format": "prettier --write \"**/*.{ts,tsx,md}\"",
+    "check-types": "turbo run check-types"
+  },
+  "devDependencies": {
+    "@babel/types": "^7.28.2",
+    "dockup": "workspace:^",
+    "prettier": "^3.6.2",
+    "turbo": "^2.5.5",
+    "typescript": "5.8.3"
+  },
+  "engines": {
+    "node": ">=18"
+  },
+  "packageManager": "yarn@4.9.2",
+  "workspaces": [
+    "packages/*",
+    "packages/@dockup/*",
+    "docs",
+    "playground"
+  ]
+}

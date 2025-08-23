@@ -21,7 +21,6 @@ export type ServiceDefinition = {
 
 export type Context = {
   workspace: string;
-  dataPath: string;
 };
 
 export type BaseConfig = {

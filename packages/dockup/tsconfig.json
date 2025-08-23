@@ -4,6 +4,7 @@
     "rootDir": "./",
     "outDir": "./build",
     "sourceMap": true,
-    "jsx": "react-jsx"
+    "jsx": "react-jsx",
+    "resolveJsonModule": true
   }
 }

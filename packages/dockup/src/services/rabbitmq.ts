@@ -62,7 +62,7 @@ export const rabbitmq = defineService<Options>((config = {}) => {
     description:
       "An open-source message broker that enables applications to communicate by sending and receiving messages through queues.",
     tags: ["messaging"],
-    async create({ workspace, dataPath }) {
+    async create({ workspace }) {
       const docker = new Dockerode();
 
       const container = new ContainerBuilder(docker);

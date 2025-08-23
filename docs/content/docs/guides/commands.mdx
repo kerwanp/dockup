@@ -1,0 +1,56 @@
+---
+title: Commands
+description: Dockup CLI commands reference
+---
+
+## `dockup init`
+
+Initialize Dockup in the current directory by installing the [dockup package](http://npmjs.com/package/dockup) and create `dockup.config.ts` file.
+
+```bash
+dockup init
+```
+
+## `dockup add`
+
+Add new service(s) to your configuration. The command will add the service(s) to your `dockup.config.ts` file.
+
+```bash
+dockup add # Will prompt you the list of available services in the registry
+
+dockup add <service> # Will add a specific service
+```
+
+## `dockup up`
+
+Starts the services and the Terminal UI.
+
+```bash
+dockup up
+
+dockup # You can also just use this
+```
+
+## `dockup metadata`
+
+Prints your services metadata like connection URLs, dashboard endpoints, credentials, etc.
+
+```bash
+dockup metadata
+```
+
+## `dockup rm`
+
+Remove services by destroying the containers and their volumes.
+
+<Callout type="warn">
+
+This will remove any persisted data.
+
+</Callout>
+
+```bash
+dockup rm # Remove all services
+
+dockup rm <service> # Remove a specific service
+```

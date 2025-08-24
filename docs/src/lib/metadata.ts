@@ -18,7 +18,7 @@ export function createMetadata(override: Metadata): Metadata {
       creator: "@MartinPaucot",
       title: override.title ?? undefined,
       description: override.description ?? undefined,
-      images: "/banner.png",
+      images: "/og/image.png",
       ...override.twitter,
     },
     alternates: {

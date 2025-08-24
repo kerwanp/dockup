@@ -52,7 +52,7 @@ export const pgadmin = defineService<Options>((config = {}) => {
         .withEnv("PGADMIN_CONFIG_MASTER_PASSWORD_REQUIRED", "False")
         .withVolumeMount("data", "/var/lib/pgadmin");
 
-      return service;
+      return config.extend ? config.extend(service) : service;
     },
     metadata: () => [
       {

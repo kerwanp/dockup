@@ -1,4 +1,5 @@
 import defaultMdxComponents from "fumadocs-ui/mdx";
+import * as Twoslash from "fumadocs-twoslash/ui";
 import { Tab, Tabs } from "fumadocs-ui/components/tabs";
 import type { MDXComponents } from "mdx/types";
 
@@ -8,6 +9,7 @@ export function getMDXComponents(components?: MDXComponents): MDXComponents {
     ...defaultMdxComponents,
     Tab,
     Tabs,
+    ...Twoslash,
     ...components,
   };
 }

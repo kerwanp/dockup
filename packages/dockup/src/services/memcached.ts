@@ -89,7 +89,7 @@ export const memcached = defineService<Options>((config = {}) => {
         .withPort(11211, port)
         .withCmd(cmd);
 
-      return service;
+      return config.extend ? config.extend(service) : service;
     },
     metadata: () => [
       {

@@ -14,9 +14,9 @@ export interface Options extends BaseConfig {
    * By default, all services are available.
    *
    * @default undefined (all services)
-   * @example "s3,dynamodb,lambda"
+   * @example ["s3","dynamodb","lambda"]
    */
-  services?: string;
+  services?: string[];
 
   /**
    * Default AWS region.
@@ -88,7 +88,7 @@ export const localstack = defineService<Options>((config = {}) => {
         .withVolumeMount("data", "/var/lib/localstack");
 
       if (services) {
-        service.withEnv("SERVICES", services);
+        service.withEnv("SERVICES", services.join(","));
       }
 
       // Mount Docker socket for Lambda and other services that need it
@@ -98,7 +98,7 @@ export const localstack = defineService<Options>((config = {}) => {
         },
       });
 
-      return service;
+      return config.extend ? config.extend(service) : service;
     },
     metadata: () => {
       const endpoint = `http://localhost:${port}`;
@@ -128,4 +128,3 @@ export const localstack = defineService<Options>((config = {}) => {
     },
   };
 });
-

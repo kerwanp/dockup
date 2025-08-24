@@ -95,7 +95,7 @@ export const jaeger = defineService<Options>((config = {}) => {
         service.withEnv("SAMPLING_STRATEGIES_RELOAD_INTERVAL", "1m");
       }
 
-      return service;
+      return config.extend ? config.extend(service) : service;
     },
     metadata: () => [
       {

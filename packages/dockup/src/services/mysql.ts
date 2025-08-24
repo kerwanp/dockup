@@ -68,7 +68,7 @@ export const mysql = defineService<Options>((config = {}) => {
         .withEnv("MYSQL_PASSWORD", password)
         .withVolumeMount("data", "/var/lib/mysql");
 
-      return service;
+      return config.extend ? config.extend(service) : service;
     },
     metadata: () => [
       {

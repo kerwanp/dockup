@@ -68,7 +68,7 @@ export const adminer = defineService<Options>((config = {}) => {
         service.withEnv("ADMINER_PLUGINS", plugins);
       }
 
-      return service;
+      return config.extend ? config.extend(service) : service;
     },
     metadata: () => {
       const metadata = [

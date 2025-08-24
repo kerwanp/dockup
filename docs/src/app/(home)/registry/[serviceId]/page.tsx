@@ -10,8 +10,27 @@ import { highlight } from "fumadocs-core/highlight";
 import { Badge } from "@/components/badge";
 import { Callout } from "fumadocs-ui/components/callout";
 import { getRegistryService } from "@/lib/registry";
+import { createMetadata } from "@/lib/metadata";
+import { Metadata } from "next";
 
 const generator = createGenerator();
+
+export async function generateMetadata({
+  params,
+}: {
+  params: Promise<{ serviceId: string }>;
+}): Promise<Metadata> {
+  const { serviceId } = await params;
+  const service = getRegistryService(serviceId);
+
+  return createMetadata({
+    title: service?.name,
+    description: `Setup ${service?.name} locally in seconds using Dockup`,
+    openGraph: {
+      type: "website",
+    },
+  });
+}
 
 export default async function Page({
   params,
@@ -56,7 +75,7 @@ export default async function Page({
     <main className="container mx-auto py-12">
       <Link
         href="/registry"
-        className="inline-flex mb-8 gap-3 items-center text-muted-foreground hover:text-white"
+        className="inline-flex mb-8 gap-3 items-center text-muted-foreground hover:text-foreground"
       >
         <MoveLeft size={20} />
         Back to registry

@@ -87,7 +87,7 @@ export const elasticsearch = defineService<Options>((config = {}) => {
         .withEnv("xpack.security.enrollment.enabled", "false")
         .withVolumeMount("data", "/usr/share/elasticsearch/data");
 
-      return service;
+      return config.extend ? config.extend(service) : service;
     },
     metadata: () => [
       {

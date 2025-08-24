@@ -91,7 +91,7 @@ export const mongodb = defineService<Options>((config = {}) => {
         ]);
       }
 
-      return service;
+      return config.extend ? config.extend(service) : service;
     },
     metadata: () => {
       const authString = auth ? `${username}:${password}@` : "";
@@ -115,4 +115,3 @@ export const mongodb = defineService<Options>((config = {}) => {
     },
   };
 });
-

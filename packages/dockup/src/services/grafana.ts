@@ -89,7 +89,7 @@ export const grafana = defineService<Options>((config = {}) => {
         service.withEnv("GF_AUTH_ANONYMOUS_ORG_ROLE", "Viewer");
       }
 
-      return service;
+      return config.extend ? config.extend(service) : service;
     },
     metadata: () => [
       {

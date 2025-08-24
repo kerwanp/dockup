@@ -90,7 +90,7 @@ export const nexus = defineService<Options>((config = {}) => {
         `echo '${initScript}' > /tmp/init.sh && chmod +x /tmp/init.sh && /tmp/init.sh && /opt/sonatype/nexus/bin/nexus run`,
       ]);
 
-      return service;
+      return config.extend ? config.extend(service) : service;
     },
     metadata: () => [
       {

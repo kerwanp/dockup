@@ -108,7 +108,7 @@ export const gitlab = defineService<Options>((config = {}) => {
         service.withPort(5050, 5050); // Registry port
       }
 
-      return service;
+      return config.extend ? config.extend(service) : service;
     },
     metadata: () => {
       const metadata = [

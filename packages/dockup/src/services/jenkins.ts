@@ -101,7 +101,7 @@ export const jenkins = defineService<Options>((config = {}) => {
         service.withEnv("JENKINS_PLUGINS", plugins);
       }
 
-      return service;
+      return config.extend ? config.extend(service) : service;
     },
     metadata: () => {
       const metadata = [
@@ -135,4 +135,3 @@ export const jenkins = defineService<Options>((config = {}) => {
     },
   };
 });
-

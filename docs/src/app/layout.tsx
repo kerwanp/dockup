@@ -1,8 +1,18 @@
 import "@/app/global.css";
+import { baseUrl, createMetadata } from "@/lib/metadata";
 import { RootProvider } from "fumadocs-ui/provider";
 import { cn } from "lib/cn";
 import { Inter, Kode_Mono } from "next/font/google";
 import type { ReactNode } from "react";
+
+export const metadata = createMetadata({
+  title: {
+    template: "Dockup - %s",
+    default: "Dockup - Local environments made easy",
+  },
+  description: "The CLI tool for managing local environments.",
+  metadataBase: baseUrl,
+});
 
 const sans = Inter({
   subsets: ["latin"],

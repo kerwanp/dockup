@@ -82,7 +82,7 @@ export const minio = defineService<Options>((config = {}) => {
         service.withEnv("MINIO_DEFAULT_BUCKETS", defaultBucket);
       }
 
-      return service;
+      return config.extend ? config.extend(service) : service;
     },
     metadata: () => {
       const s3Endpoint = `http://localhost:${port}`;

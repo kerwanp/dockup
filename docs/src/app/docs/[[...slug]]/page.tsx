@@ -4,7 +4,8 @@ import { notFound } from "next/navigation";
 import { createRelativeLink } from "fumadocs-ui/mdx";
 import { getMDXComponents } from "@/mdx-components";
 import { LLMCopyButton, ViewOptions } from "@/components/ai/page-actions";
-import { Rate } from "@/components/rate";
+import { Metadata } from "next";
+import { createMetadata } from "@/lib/metadata";
 
 export default async function Page(props: {
   params: Promise<{ slug?: string[] }>;
@@ -47,13 +48,16 @@ export async function generateStaticParams() {
 
 export async function generateMetadata(props: {
   params: Promise<{ slug?: string[] }>;
-}) {
+}): Promise<Metadata> {
   const params = await props.params;
   const page = source.getPage(params.slug);
   if (!page) notFound();
 
-  return {
+  return createMetadata({
     title: page.data.title,
     description: page.data.description,
-  };
+    openGraph: {
+      type: "website",
+    },
+  });
 }

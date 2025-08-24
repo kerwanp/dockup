@@ -15,7 +15,7 @@ export const ServiceCard = ({
   return (
     <Link
       href={`/registry/${id}`}
-      className="border rounded-lg p-6 flex flex-col gap-3 hover:border-primary transition-all"
+      className="border rounded-lg p-6 flex flex-col gap-3 hover:border-primary transition-all duration-75"
     >
       <div className="flex-1 mb-2">
         <h2 className="text-xl font-semibold mb-2">{name}</h2>

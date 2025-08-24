@@ -97,7 +97,7 @@ export const phpmyadmin = defineService<Options>((config = {}) => {
         service.withEnv("PMA_ARBITRARY", "1");
       }
 
-      return service;
+      return config.extend ? config.extend(service) : service;
     },
     metadata: () => [
       {
@@ -123,4 +123,3 @@ export const phpmyadmin = defineService<Options>((config = {}) => {
     ],
   };
 });
-

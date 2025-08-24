@@ -1,4 +1,5 @@
 @import "tailwindcss";
+@import "fumadocs-twoslash/twoslash.css";
 @import "fumadocs-ui/css/black.css";
 @import "fumadocs-ui/css/preset.css";
 

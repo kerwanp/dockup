@@ -14,7 +14,7 @@ export const steps = {
       log.error(
         "Docker is required to run Dockup: https://dockup.dev/docs#docker",
       );
-      process.exit(0);
+      process.exit(1);
     }
 
     await this.installGlobally();

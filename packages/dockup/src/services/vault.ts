@@ -82,7 +82,7 @@ export const vault = defineService<Options>((config = {}) => {
         service.withEnv("VAULT_UI", "false");
       }
 
-      return service;
+      return config.extend ? config.extend(service) : service;
     },
     metadata: () => {
       const metadata = [
@@ -115,4 +115,3 @@ export const vault = defineService<Options>((config = {}) => {
     },
   };
 });
-

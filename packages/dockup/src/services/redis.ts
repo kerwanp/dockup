@@ -28,7 +28,7 @@ export const redis = defineService<Options>((config = {}) => {
         .withPort(6379, port)
         .withVolumeMount("data", "/data");
 
-      return service;
+      return config.extend ? config.extend(service) : service;
     },
   };
 });

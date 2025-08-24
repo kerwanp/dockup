@@ -1,0 +1,69 @@
+---
+title: Introducing Dockup Beta
+description: Dockup is a new CLI tool for creating local environments with ease.
+author: Martin PAUCOT
+date: 2025-08-24
+---
+
+**TL;DR**:
+Spin up Postgresql, Redis, S3, Localstack, etc, for your project in seconds using `npx dockup`. [Get started here](/docs)
+
+---
+
+Modern applications are more powerful than ever, but getting them running locally has never been more complex. Every project needs a database, cache, message queue, and half a dozen other services. Docker promises to solve this, but now you need to understand containers, networks, volumes, and YAML configurations just to start coding.
+
+**There has to be a better way.**
+
+## What is Dockup?
+
+Dockup is a CLI tool that eliminates the complexity of setting up development environments. Instead of wrestling with Docker configurations, networking, and volume mounting, you simply declare the services you need—PostgreSQL, Redis, RabbitMQ, MySQL—and Dockup handles the rest.
+
+With a single command (`npx dockup`) and a simple configuration file, you can spin up your entire development stack in seconds. Need a database and cache for your project? Simply run `npx add postgresql redis` and Dockup takes care of running, connecting, and managing these services locally.
+
+```ts title="dockup.config.ts"
+import { defineConfig } from "dockup/config";
+import { postgresql, redis, mailhog, localstack } from "dockup/services";
+
+export default defineConfig({
+  services: [
+    postgresql(),
+    redis(),
+    mailhog(),
+    localstack({ services: ["s3"] }),
+  ],
+});
+```
+
+Think of it as the missing layer between "I need a database" and "Docker is now consuming my afternoon." You get all the benefits of containerized services without needing to become a Docker expert. Your focus stays where it belongs—on building your application, not configuring your environment.
+
+## **Key Features**
+
+**Simple Configuration**: Define your services in a clean, TypeScript-based config file. No YAML, no complex Docker configurations—just specify what you need and get back to coding.
+
+**Service Registry**: Choose from a curated collection of pre-configured services including PostgreSQL, MySQL, MariaDB, Redis, and RabbitMQ. Each service is optimized for development with sensible defaults.
+
+**Beautiful Terminal UI**: Monitor your running services through an intuitive terminal interface. Start, stop, and manage services without memorizing Docker commands or hunting through container logs.
+
+**Cross-Platform**: Runs anywhere Docker can run, ensuring consistent development environments across your entire team, regardless of operating system.
+
+**Zero Docker Knowledge Required**: Focus on your application logic while Dockup handles containers, networking, and data persistence behind the scenes.
+
+## Getting Started
+
+You only need one command to get started:
+
+```package-install
+npx dockup
+```
+
+## Beta Status & Roadmap
+
+Dockup Beta includes our core service registry and the fundamental CLI experience. The current services are battle-tested and ready for daily development use. We're actively working on expanding the service library, adding custom service creation tools, and improving the terminal UI based on community feedback.
+
+This is a beta release, which means we're refining features and gathering feedback from real-world usage. Your development workflow won't be disrupted, but you might encounter rough edges as we polish the experience.
+
+Here are some ideas we have in our backlog:
+
+- **JSON support:** For those we do not want a package.json in their project.
+- **Dockup Cloud:** One file to rule both local and production?
+- **Env management:** Why not updating your `.env` automatically?

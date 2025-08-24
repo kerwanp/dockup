@@ -13,7 +13,7 @@ dockup add <service>
 
 This will update your `dockup.config.ts` file by adding the new service.
 
-```ts title="dockup.config.ts"
+```ts title="dockup.config.ts" twoslash
 import { defineConfig } from "dockup/config";
 import { postgresql } from "dockup/services";
 
@@ -30,9 +30,9 @@ You can find the list of available services and their configuration in the [regi
 
 ## Configure services
 
-Each service accepts different options allowing you to configure its behaviour:
+Each service accepts different options allowing you to configure their behaviour:
 
-```ts title="dockup.config.ts"
+```ts title="dockup.config.ts" twoslash
 import { defineConfig } from "dockup/config";
 import { rabbitmq, postgresql } from "dockup/services";
 
@@ -54,11 +54,28 @@ You can find the list of available services and their configuration in the [regi
 
 </Callout>
 
+Services also accept an `extend` parameter for a more low-level configuration:
+
+```ts title="dockup.config.ts" twoslash
+import { defineConfig } from "dockup/config";
+import { rabbitmq, postgresql } from "dockup/services";
+
+export default defineConfig({
+  services: [
+    postgresql({
+      image: "postgres:16",
+      extend: (container) =>
+        container.withEnv("POSTGRES_INITDB_ARGS", "--data-checksums"),
+    }),
+  ],
+});
+```
+
 ## Multiple instances
 
 Their are use cases where you want to run multiple instances of the same service. For this you can use the `name` option (defaults to the service name).
 
-```ts title="dockup.config.ts"
+```ts title="dockup.config.ts" twoslash
 import { defineConfig } from "dockup/config";
 import { postgresql } from "dockup/services";
 

@@ -1,13 +1,10 @@
 import Link from "next/link";
 import { Button } from "../button";
 import { ReleaseButton } from "../magic/release-button";
-import { ArrowRight, File, TypeIcon } from "lucide-react";
-import { DynamicCodeBlock } from "fumadocs-ui/components/dynamic-codeblock";
+import { ArrowRight } from "lucide-react";
 import { AuroraText } from "../magic/aurora-text";
 import { highlight } from "fumadocs-core/highlight";
 import { CodeBlock, Pre } from "fumadocs-ui/components/codeblock";
-import { RainbowButton } from "../rainbow-button";
-import { MagicCard } from "../magic/magic-card";
 import { ScriptCopyBtn } from "../magic/script-copy-button";
 
 export const HeroSection = async () => {
@@ -34,7 +31,11 @@ export default defineConfig({
   return (
     <section className="flex flex-row gap-6 min-h-[60svh] items-center justify-between">
       <div>
-        <ReleaseButton className="mb-6">Introducing Dockup beta</ReleaseButton>
+        <Link href="/blog/introducing-dockup-beta">
+          <ReleaseButton className="mb-6">
+            Introducing Dockup beta
+          </ReleaseButton>
+        </Link>
         <div className="mb-8">
           <h1 className="text-8xl mb-4 font-bold">Dockup</h1>
           <AuroraText className="text-4xl mb-4 font-mono">

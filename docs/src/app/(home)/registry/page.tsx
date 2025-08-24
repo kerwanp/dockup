@@ -1,5 +1,10 @@
 import { ServiceCard } from "@/components/service-card";
+import { createMetadata } from "@/lib/metadata";
 import { getRegistryServices } from "@/lib/registry";
+
+export const metadata = createMetadata({
+  title: "Registry",
+});
 
 export default function Page() {
   const services = getRegistryServices();

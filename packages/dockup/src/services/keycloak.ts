@@ -89,7 +89,7 @@ export const keycloak = defineService<Options>((config = {}) => {
         cmd.push("--import-realm");
       }
 
-      return service;
+      return config.extend ? config.extend(service) : service;
     },
     metadata: () => [
       {

@@ -514,6 +514,24 @@ __metadata:
   languageName: node
   linkType: hard
 
+"@fumadocs/mdx-remote@npm:^1.4.0":
+  version: 1.4.0
+  resolution: "@fumadocs/mdx-remote@npm:1.4.0"
+  dependencies:
+    "@mdx-js/mdx": "npm:^3.1.0"
+    gray-matter: "npm:^4.0.3"
+    zod: "npm:^4.0.5"
+  peerDependencies:
+    "@types/react": "*"
+    fumadocs-core: ^14.0.0 || ^15.0.0
+    react: 18.x.x || 19.x.x
+  peerDependenciesMeta:
+    "@types/react":
+      optional: true
+  checksum: 10c0/dbdb816d8f13404ca4236a79b233e2012d379be9fef1cb2acba3c678630c193adc4ea890e8b44540b0017400b57a912eaa18bd14fd4311ff752e3833d25e5a3b
+  languageName: node
+  linkType: hard
+
 "@grpc/grpc-js@npm:^1.11.1":
   version: 1.13.4
   resolution: "@grpc/grpc-js@npm:1.13.4"
@@ -2264,6 +2282,19 @@ __metadata:
   languageName: node
   linkType: hard
 
+"@shikijs/twoslash@npm:^3.9.2":
+  version: 3.11.0
+  resolution: "@shikijs/twoslash@npm:3.11.0"
+  dependencies:
+    "@shikijs/core": "npm:3.11.0"
+    "@shikijs/types": "npm:3.11.0"
+    twoslash: "npm:^0.3.4"
+  peerDependencies:
+    typescript: ">=5.5.0"
+  checksum: 10c0/7ce3a3cb59eaf009cbfdd675ecff3750ea741929e114c91b0f40476e8c8689367a4200eada8b47bc2312d70f540e45b09a7c9daedd386668b2b5cf6cf0870324
+  languageName: node
+  linkType: hard
+
 "@shikijs/types@npm:3.11.0":
   version: 3.11.0
   resolution: "@shikijs/types@npm:3.11.0"
@@ -3199,6 +3230,17 @@ __metadata:
   languageName: node
   linkType: hard
 
+"@typescript/vfs@npm:^1.6.1":
+  version: 1.6.1
+  resolution: "@typescript/vfs@npm:1.6.1"
+  dependencies:
+    debug: "npm:^4.1.1"
+  peerDependencies:
+    typescript: "*"
+  checksum: 10c0/3878686aff4bf26813dad9242aa8e01c5c9734f4d37f31035f93e9c8b850f15ec6a4480f04cf3a3a1cbf78a4e796ae1be5d6c54f7f7c91556eafee913a8d0da4
+  languageName: node
+  linkType: hard
+
 "@ungap/structured-clone@npm:^1.0.0, @ungap/structured-clone@npm:^1.2.0":
   version: 1.3.0
   resolution: "@ungap/structured-clone@npm:1.3.0"
@@ -3454,6 +3496,15 @@ __metadata:
   version: 4.1.3
   resolution: "arg@npm:4.1.3"
   checksum: 10c0/070ff801a9d236a6caa647507bdcc7034530604844d64408149a26b9e87c2f97650055c0f049abd1efc024b334635c01f29e0b632b371ac3f26130f4cf65997a
+  languageName: node
+  linkType: hard
+
+"argparse@npm:^1.0.7":
+  version: 1.0.10
+  resolution: "argparse@npm:1.0.10"
+  dependencies:
+    sprintf-js: "npm:~1.0.2"
+  checksum: 10c0/b2972c5c23c63df66bca144dbc65d180efa74f25f8fd9b7d9a0a6c88ae839db32df3d54770dcb6460cf840d232b60695d1a6b1053f599d84e73f7437087712de
   languageName: node
   linkType: hard
 
@@ -4509,6 +4560,7 @@ __metadata:
   version: 0.0.0-use.local
   resolution: "docs@workspace:docs"
   dependencies:
+    "@fumadocs/mdx-remote": "npm:^1.4.0"
     "@radix-ui/react-separator": "npm:^1.1.7"
     "@tailwindcss/postcss": "npm:^4.1.11"
     "@types/mdx": "npm:^2.0.13"
@@ -4521,6 +4573,7 @@ __metadata:
     fumadocs-core: "npm:15.6.10"
     fumadocs-docgen: "npm:^2.1.0"
     fumadocs-mdx: "npm:11.7.5"
+    fumadocs-twoslash: "npm:^3.1.6"
     fumadocs-typescript: "npm:^4.0.6"
     fumadocs-ui: "npm:15.6.10"
     lucide-react: "npm:^0.539.0"
@@ -4533,7 +4586,9 @@ __metadata:
     tailwindcss: "npm:^4.1.11"
     ts-node: "npm:^10.9.2"
     tsx: "npm:^4.20.4"
+    twoslash: "npm:^0.3.4"
     typescript: "npm:^5.9.2"
+    zod: "npm:^4.1.0"
   languageName: unknown
   linkType: soft
 
@@ -5347,6 +5402,16 @@ __metadata:
   languageName: node
   linkType: hard
 
+"esprima@npm:^4.0.0":
+  version: 4.0.1
+  resolution: "esprima@npm:4.0.1"
+  bin:
+    esparse: ./bin/esparse.js
+    esvalidate: ./bin/esvalidate.js
+  checksum: 10c0/ad4bab9ead0808cf56501750fd9d3fb276f6b105f987707d059005d57e182d18a7c9ec7f3a01794ebddcca676773e42ca48a32d67a250c9d35e009ca613caba3
+  languageName: node
+  linkType: hard
+
 "esquery@npm:^1.4.2, esquery@npm:^1.5.0, esquery@npm:^1.6.0":
   version: 1.6.0
   resolution: "esquery@npm:1.6.0"
@@ -5508,6 +5573,15 @@ __metadata:
   version: 1.0.7
   resolution: "exsolve@npm:1.0.7"
   checksum: 10c0/4479369d0bd84bb7e0b4f5d9bc18d26a89b6dbbbccd73f9d383d14892ef78ddbe159e01781055342f83dc00ebe90044036daf17ddf55cc21e2cac6609aa15631
+  languageName: node
+  linkType: hard
+
+"extend-shallow@npm:^2.0.1":
+  version: 2.0.1
+  resolution: "extend-shallow@npm:2.0.1"
+  dependencies:
+    is-extendable: "npm:^0.1.0"
+  checksum: 10c0/ee1cb0a18c9faddb42d791b2d64867bd6cfd0f3affb711782eb6e894dd193e2934a7f529426aac7c8ddb31ac5d38000a00aa2caf08aa3dfc3e1c8ff6ba340bd9
   languageName: node
   linkType: hard
 
@@ -5869,6 +5943,29 @@ __metadata:
   languageName: node
   linkType: hard
 
+"fumadocs-twoslash@npm:^3.1.6":
+  version: 3.1.6
+  resolution: "fumadocs-twoslash@npm:3.1.6"
+  dependencies:
+    "@radix-ui/react-popover": "npm:^1.1.14"
+    "@shikijs/twoslash": "npm:^3.9.2"
+    mdast-util-from-markdown: "npm:^2.0.2"
+    mdast-util-gfm: "npm:^3.1.0"
+    mdast-util-to-hast: "npm:^13.2.0"
+    shiki: "npm:^3.9.2"
+    tailwind-merge: "npm:^3.3.1"
+    twoslash: "npm:^0.3.4"
+  peerDependencies:
+    "@types/react": "*"
+    fumadocs-ui: ^15.0.0
+    react: 18.x.x || 19.x.x
+  peerDependenciesMeta:
+    "@types/react":
+      optional: true
+  checksum: 10c0/3164dfce779d9789ffb380566da0feede8696f2d31ebd8bc2da070bda956cdef8dc835cf92660ba5657cc22d3306a2c4011cf8eb030959cc8a76e2239f7babce
+  languageName: node
+  linkType: hard
+
 "fumadocs-typescript@npm:^4.0.6":
   version: 4.0.6
   resolution: "fumadocs-typescript@npm:4.0.6"
@@ -6167,6 +6264,18 @@ __metadata:
   version: 1.4.0
   resolution: "graphemer@npm:1.4.0"
   checksum: 10c0/e951259d8cd2e0d196c72ec711add7115d42eb9a8146c8eeda5b8d3ac91e5dd816b9cd68920726d9fd4490368e7ed86e9c423f40db87e2d8dfafa00fa17c3a31
+  languageName: node
+  linkType: hard
+
+"gray-matter@npm:^4.0.3":
+  version: 4.0.3
+  resolution: "gray-matter@npm:4.0.3"
+  dependencies:
+    js-yaml: "npm:^3.13.1"
+    kind-of: "npm:^6.0.2"
+    section-matter: "npm:^1.0.0"
+    strip-bom-string: "npm:^1.0.0"
+  checksum: 10c0/e38489906dad4f162ca01e0dcbdbed96d1a53740cef446b9bf76d80bec66fa799af07776a18077aee642346c5e1365ed95e4c91854a12bf40ba0d4fb43a625a6
   languageName: node
   linkType: hard
 
@@ -6641,6 +6750,13 @@ __metadata:
   languageName: node
   linkType: hard
 
+"is-extendable@npm:^0.1.0":
+  version: 0.1.1
+  resolution: "is-extendable@npm:0.1.1"
+  checksum: 10c0/dd5ca3994a28e1740d1e25192e66eed128e0b2ff161a7ea348e87ae4f616554b486854de423877a2a2c171d5f7cd6e8093b91f54533bc88a59ee1c9838c43879
+  languageName: node
+  linkType: hard
+
 "is-extglob@npm:^2.1.1":
   version: 2.1.1
   resolution: "is-extglob@npm:2.1.1"
@@ -7025,6 +7141,18 @@ __metadata:
   languageName: node
   linkType: hard
 
+"js-yaml@npm:^3.13.1":
+  version: 3.14.1
+  resolution: "js-yaml@npm:3.14.1"
+  dependencies:
+    argparse: "npm:^1.0.7"
+    esprima: "npm:^4.0.0"
+  bin:
+    js-yaml: bin/js-yaml.js
+  checksum: 10c0/6746baaaeac312c4db8e75fa22331d9a04cccb7792d126ed8ce6a0bbcfef0cedaddd0c5098fade53db067c09fe00aa1c957674b4765610a8b06a5a189e46433b
+  languageName: node
+  linkType: hard
+
 "js-yaml@npm:^4.1.0":
   version: 4.1.0
   resolution: "js-yaml@npm:4.1.0"
@@ -7104,6 +7232,13 @@ __metadata:
   dependencies:
     json-buffer: "npm:3.0.1"
   checksum: 10c0/aa52f3c5e18e16bb6324876bb8b59dd02acf782a4b789c7b2ae21107fab95fab3890ed448d4f8dba80ce05391eeac4bfabb4f02a20221342982f806fa2cf271e
+  languageName: node
+  linkType: hard
+
+"kind-of@npm:^6.0.0, kind-of@npm:^6.0.2":
+  version: 6.0.3
+  resolution: "kind-of@npm:6.0.3"
+  checksum: 10c0/61cdff9623dabf3568b6445e93e31376bee1cdb93f8ba7033d86022c2a9b1791a1d9510e026e6465ebd701a6dd2f7b0808483ad8838341ac52f003f512e0b4c4
   languageName: node
   linkType: hard
 
@@ -7416,7 +7551,7 @@ __metadata:
   languageName: node
   linkType: hard
 
-"mdast-util-from-markdown@npm:^2.0.0":
+"mdast-util-from-markdown@npm:^2.0.0, mdast-util-from-markdown@npm:^2.0.2":
   version: 2.0.2
   resolution: "mdast-util-from-markdown@npm:2.0.2"
   dependencies:
@@ -7498,7 +7633,7 @@ __metadata:
   languageName: node
   linkType: hard
 
-"mdast-util-gfm@npm:^3.0.0":
+"mdast-util-gfm@npm:^3.0.0, mdast-util-gfm@npm:^3.1.0":
   version: 3.1.0
   resolution: "mdast-util-gfm@npm:3.1.0"
   dependencies:
@@ -7584,7 +7719,7 @@ __metadata:
   languageName: node
   linkType: hard
 
-"mdast-util-to-hast@npm:^13.0.0":
+"mdast-util-to-hast@npm:^13.0.0, mdast-util-to-hast@npm:^13.2.0":
   version: 13.2.0
   resolution: "mdast-util-to-hast@npm:13.2.0"
   dependencies:
@@ -9538,6 +9673,16 @@ __metadata:
   languageName: node
   linkType: hard
 
+"section-matter@npm:^1.0.0":
+  version: 1.0.0
+  resolution: "section-matter@npm:1.0.0"
+  dependencies:
+    extend-shallow: "npm:^2.0.1"
+    kind-of: "npm:^6.0.0"
+  checksum: 10c0/8007f91780adc5aaa781a848eaae50b0f680bbf4043b90cf8a96778195b8fab690c87fe7a989e02394ce69890e330811ec8dab22397d384673ce59f7d750641d
+  languageName: node
+  linkType: hard
+
 "semver@npm:^6.3.1":
   version: 6.3.1
   resolution: "semver@npm:6.3.1"
@@ -9887,6 +10032,13 @@ __metadata:
   languageName: node
   linkType: hard
 
+"sprintf-js@npm:~1.0.2":
+  version: 1.0.3
+  resolution: "sprintf-js@npm:1.0.3"
+  checksum: 10c0/ecadcfe4c771890140da5023d43e190b7566d9cf8b2d238600f31bec0fc653f328da4450eb04bd59a431771a8e9cc0e118f0aa3974b683a4981b4e07abc2a5bb
+  languageName: node
+  linkType: hard
+
 "ssh2@npm:^1.15.0":
   version: 1.17.0
   resolution: "ssh2@npm:1.17.0"
@@ -10086,6 +10238,13 @@ __metadata:
   dependencies:
     ansi-regex: "npm:^6.0.1"
   checksum: 10c0/a198c3762e8832505328cbf9e8c8381de14a4fa50a4f9b2160138158ea88c0f5549fb50cb13c651c3088f47e63a108b34622ec18c0499b6c8c3a5ddf6b305ac4
+  languageName: node
+  linkType: hard
+
+"strip-bom-string@npm:^1.0.0":
+  version: 1.0.0
+  resolution: "strip-bom-string@npm:1.0.0"
+  checksum: 10c0/5c5717e2643225aa6a6d659d34176ab2657037f1fe2423ac6fcdb488f135e14fef1022030e426d8b4d0989e09adbd5c3288d5d3b9c632abeefd2358dfc512bca
   languageName: node
   linkType: hard
 
@@ -10486,6 +10645,25 @@ __metadata:
   version: 0.14.5
   resolution: "tweetnacl@npm:0.14.5"
   checksum: 10c0/4612772653512c7bc19e61923fbf42903f5e0389ec76a4a1f17195859d114671ea4aa3b734c2029ce7e1fa7e5cc8b80580f67b071ecf0b46b5636d030a0102a2
+  languageName: node
+  linkType: hard
+
+"twoslash-protocol@npm:0.3.4":
+  version: 0.3.4
+  resolution: "twoslash-protocol@npm:0.3.4"
+  checksum: 10c0/4062a0dced5e8bca37db0b759cbb08f13b00d13572cd676686d139d436ec324d9b1ca959cf0929683b987b090c62ad52f02c8948919e89f8ab76e5502eb1e309
+  languageName: node
+  linkType: hard
+
+"twoslash@npm:^0.3.4":
+  version: 0.3.4
+  resolution: "twoslash@npm:0.3.4"
+  dependencies:
+    "@typescript/vfs": "npm:^1.6.1"
+    twoslash-protocol: "npm:0.3.4"
+  peerDependencies:
+    typescript: ^5.5.0
+  checksum: 10c0/1220393b48dce0e0f20c7c9ce2801864ee99dc052b1f78d884a5eb737052164511d26c8ca7652170475a3bff28afdf96a136132d074f8e35dee5d79d6208162c
   languageName: node
   linkType: hard
 
@@ -11190,6 +11368,13 @@ __metadata:
   version: 4.0.17
   resolution: "zod@npm:4.0.17"
   checksum: 10c0/c56ef4cc02f8f52be8724c5a8b338266202d68477c7606bee9b7299818b75c9adc27f16f4b6704a372f3e7578bd016f389de19bfec766564b7c39d0d327c540a
+  languageName: node
+  linkType: hard
+
+"zod@npm:^4.0.5, zod@npm:^4.1.0":
+  version: 4.1.0
+  resolution: "zod@npm:4.1.0"
+  checksum: 10c0/b39bce830cf9864e33b00da2e3fee008e1abb96fff169936ba779648276b6a031d35ed5438d7659ac5d5e09b932d40dce6c255344184794d56f8bd22e501561b
   languageName: node
   linkType: hard
 

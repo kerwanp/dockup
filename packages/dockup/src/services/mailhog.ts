@@ -88,7 +88,7 @@ export const mailhog = defineService<Options>((config = {}) => {
           .withEnv("MH_MAILDIR_PATH", "/maildir");
       }
 
-      return service;
+      return config.extend ? config.extend(service) : service;
     },
     metadata: () => {
       const smtpUrl = auth

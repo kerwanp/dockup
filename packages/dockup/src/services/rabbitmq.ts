@@ -77,7 +77,7 @@ export const rabbitmq = defineService<Options>((config = {}) => {
         service.withPort(15672, managementPort);
       }
 
-      return service;
+      return config.extend ? config.extend(service) : service;
     },
     metadata: () => [
       {

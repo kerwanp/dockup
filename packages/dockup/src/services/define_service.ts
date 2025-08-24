@@ -1,7 +1,8 @@
 import Dockerode from "dockerode";
 import { Service } from "../services/service.js";
+import { ContainerService } from "../container/container_service.js";
 
-export type ServiceFn = () => Promise<void>;
+export type ServiceFn<T> = (config?: T) => ServiceDefinition;
 
 export type ServiceType = "container";
 
@@ -36,11 +37,16 @@ export type BaseConfig = {
    * Override the Docker image used by the service.
    */
   image?: string;
+
+  /**
+   * Modifies the service.
+   */
+  extend?: (service: ContainerService) => ContainerService;
 };
 
 export function defineService<T extends BaseConfig>(
   options: (config?: T) => ServiceDefinition,
-) {
+): ServiceFn<T> {
   return (config?: T) => {
     return options(config);
   };

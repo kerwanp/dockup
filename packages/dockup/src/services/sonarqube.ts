@@ -84,7 +84,7 @@ export const sonarqube = defineService<Options>((config = {}) => {
         .withVolumeMount("logs", "/opt/sonarqube/logs")
         .withVolumeMount("extensions", "/opt/sonarqube/extensions");
 
-      return service;
+      return config.extend ? config.extend(service) : service;
     },
     metadata: () => [
       {

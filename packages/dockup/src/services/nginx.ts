@@ -116,7 +116,7 @@ export const nginx = defineService<Options>((config = {}) => {
         });
       }
 
-      return service;
+      return config.extend ? config.extend(service) : service;
     },
     metadata: () => {
       const metadata = [
@@ -152,4 +152,3 @@ export const nginx = defineService<Options>((config = {}) => {
     },
   };
 });
-

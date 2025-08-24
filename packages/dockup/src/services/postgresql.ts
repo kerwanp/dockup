@@ -59,7 +59,7 @@ export const postgresql = defineService<Options>((config = {}) => {
         .withEnv("POSTGRES_PASSWORD", password)
         .withVolumeMount("data", "/var/lib/postgresql");
 
-      return service;
+      return config.extend ? config.extend(service) : service;
     },
     metadata: () => [
       {

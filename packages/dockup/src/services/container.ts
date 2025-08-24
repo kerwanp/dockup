@@ -16,11 +16,7 @@ export const container = defineService<Options>((config) => {
 
       service.withName(`${workspace}_${name}`).withImage(image);
 
-      if (config?.extend) {
-        config.extend(service);
-      }
-
-      return service;
+      return config?.extend ? config?.extend(service) : service;
     },
   };
 });

@@ -1,6 +1,5 @@
 import { intro } from "@clack/prompts";
 import chalk from "chalk";
-import Dockerode from "dockerode";
 import { execa } from "execa";
 
 export const colors = {
@@ -27,9 +26,5 @@ export async function isGloballyInstalled() {
 }
 
 export async function isDockerInstalled() {
-  const docker = new Dockerode();
-  return docker
-    .version()
-    .then(() => true)
-    .catch(() => false);
+  return execa`docker version`.then(() => true).catch(() => false);
 }

@@ -5,16 +5,19 @@
   "scripts": {
     "build": "next build",
     "dev": "next dev --turbo",
+    "lint": "next lint",
     "start": "next start",
     "postinstall": "fumadocs-mdx",
     "gen:registry": "tsx scripts/registry.mts"
   },
   "dependencies": {
+    "@fumadocs/mdx-remote": "^1.4.0",
     "@radix-ui/react-separator": "^1.1.7",
     "dockup": "workspace:*",
     "fumadocs-core": "15.6.10",
     "fumadocs-docgen": "^2.1.0",
     "fumadocs-mdx": "11.7.5",
+    "fumadocs-twoslash": "^3.1.6",
     "fumadocs-typescript": "^4.0.6",
     "fumadocs-ui": "15.6.10",
     "lucide-react": "^0.539.0",
@@ -24,7 +27,9 @@
     "react": "^19.1.1",
     "react-dom": "^19.1.1",
     "ts-node": "^10.9.2",
-    "tsx": "^4.20.4"
+    "tsx": "^4.20.4",
+    "twoslash": "^0.3.4",
+    "zod": "^4.1.0"
   },
   "devDependencies": {
     "@tailwindcss/postcss": "^4.1.11",

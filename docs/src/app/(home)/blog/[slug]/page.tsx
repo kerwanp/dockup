@@ -3,13 +3,15 @@ import { notFound } from "next/navigation";
 import Link from "next/link";
 import { InlineTOC } from "fumadocs-ui/components/inline-toc";
 import { blog } from "@/lib/source";
-import { createMetadata } from "@/lib/metadata";
+import { createMetadata, metadataImageBlog } from "@/lib/metadata";
 import { buttonVariants } from "@/components/button";
 import { Control } from "@/app/(home)/blog/[slug]/page.client";
 import { getMDXComponents } from "@/mdx-components";
 import path from "node:path";
 
-export default async function Page(props: PageProps<"/blog/[slug]">) {
+export default async function Page(props: {
+  params: Promise<{ slug: string }>;
+}) {
   const params = await props.params;
   const page = blog.getPage([params.slug]);
 
@@ -67,19 +69,27 @@ export default async function Page(props: PageProps<"/blog/[slug]">) {
   );
 }
 
-export async function generateMetadata(
-  props: PageProps<"/blog/[slug]">,
-): Promise<Metadata> {
+export async function generateMetadata(props: {
+  params: Promise<{ slug: string }>;
+}): Promise<Metadata> {
   const params = await props.params;
   const page = blog.getPage([params.slug]);
 
   if (!page) notFound();
 
-  return createMetadata({
-    title: page.data.title,
-    description:
-      page.data.description ?? "The CLI tool for managing local environments.",
-  });
+  return metadataImageBlog.withImage(
+    [params.slug],
+    createMetadata({
+      title: page.data.title,
+      description:
+        page.data.description ??
+        "The CLI tool for managing local environments.",
+      openGraph: {
+        type: "article",
+        images: ["/og/blog/", params.slug, "image.png"].join("/"),
+      },
+    }),
+  );
 }
 
 export function generateStaticParams(): { slug: string }[] {

@@ -1,7 +1,7 @@
 {
   "name": "dockup",
   "type": "module",
-  "version": "0.0.0-alpha.5",
+  "version": "0.0.0-alpha.6",
   "repository": {
     "type": "git",
     "url": "git+https://github.com/kerwanp/dockup.git"

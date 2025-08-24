@@ -5,10 +5,7 @@ export function getRegistryServices() {
   const output: Record<string, ServiceDefinition> = {};
 
   for (const [id, def] of Object.entries(services)) {
-    if (typeof def !== "function") continue;
-    if (def === services.Service) continue;
-
-    const instance = (def as services.ServiceFn<unknown>)();
+    const instance = def();
     if (!instance.name) continue;
     output[id] = instance;
   }

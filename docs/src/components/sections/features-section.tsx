@@ -28,7 +28,7 @@ export const FeaturesSection = () => {
       </FeatureCard>
       <FeatureCard Icon={BookOpenCheck} title="Registry" subtitle="Plug'n play">
         Use one of the many services already available to get started in
-        minutes.
+        seconds.
       </FeatureCard>
       <FeatureCard
         Icon={BookOpenCheck}

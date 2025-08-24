@@ -17,9 +17,7 @@ export default function Page() {
   return (
     <div className="mx-auto w-full max-w-fd-container sm:px-4 md:py-12">
       <div className="mb-8">
-        <h1 className="mb-4 border-b-4 border-fd-foreground pb-2 text-4xl font-bold md:text-5xl">
-          Dockup Blog
-        </h1>
+        <h1 className="text-5xl font-bold">Dockup Blog</h1>
       </div>
       <div className="mt-4 grid grid-cols-1 md:grid-cols-3 lg:grid-cols-4">
         {posts.map((post) => {

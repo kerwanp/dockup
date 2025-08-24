@@ -10,9 +10,9 @@ export default function Page() {
   const services = getRegistryServices();
 
   return (
-    <main className="container mx-auto py-12">
+    <main className="mx-auto w-full max-w-fd-container sm:px-4 md:py-12">
       <div className="mb-8">
-        <h1 className="text-5xl font-bold">Dockup registry</h1>
+        <h1 className="text-5xl font-bold">Dockup Registry</h1>
       </div>
 
       <div className="grid grid-cols-4 gap-4">

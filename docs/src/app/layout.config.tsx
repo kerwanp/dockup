@@ -25,7 +25,7 @@ export const baseOptions: BaseLayoutProps = {
   nav: {
     title: (
       <>
-        <div className="font-bold font-mono text-2xl">DOCKUP</div>
+        <div className="font-bold text-2xl">Dockup</div>
       </>
     ),
     url: "/",

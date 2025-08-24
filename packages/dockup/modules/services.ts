@@ -22,5 +22,3 @@ export { nexus } from "../src/services/nexus.js";
 export { phpmyadmin } from "../src/services/phpmyadmin.js";
 export { pgadmin } from "../src/services/pgadmin.js";
 export { adminer } from "../src/services/adminer.js";
-export * from "../src/services/define_service.js";
-export * from "../src/services/service.js";

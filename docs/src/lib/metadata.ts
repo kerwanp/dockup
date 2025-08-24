@@ -1,4 +1,6 @@
+import { createMetadataImage } from "fumadocs-core/server";
 import type { Metadata } from "next/types";
+import { blog, source } from "./source";
 
 export function createMetadata(override: Metadata): Metadata {
   return {
@@ -7,7 +9,7 @@ export function createMetadata(override: Metadata): Metadata {
       title: override.title ?? undefined,
       description: override.description ?? undefined,
       url: "https://dockup.dev",
-      images: "/banner.png",
+      images: "/og/image.png",
       siteName: "Dockup",
       ...override.openGraph,
     },
@@ -32,6 +34,16 @@ export function createMetadata(override: Metadata): Metadata {
     },
   };
 }
+
+export const metadataImageDocs = createMetadataImage({
+  source,
+  imageRoute: "og/docs",
+});
+
+export const metadataImageBlog = createMetadataImage({
+  source: blog,
+  imageRoute: "og/blog",
+});
 
 export const baseUrl =
   process.env.NODE_ENV === "development" ||

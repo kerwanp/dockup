@@ -2,7 +2,7 @@ import "@/app/global.css";
 import { baseUrl, createMetadata } from "@/lib/metadata";
 import { RootProvider } from "fumadocs-ui/provider";
 import { cn } from "lib/cn";
-import { Inter, Kode_Mono } from "next/font/google";
+import { Kode_Mono, Manrope } from "next/font/google";
 import type { ReactNode } from "react";
 
 export const metadata = createMetadata({
@@ -14,7 +14,7 @@ export const metadata = createMetadata({
   metadataBase: baseUrl,
 });
 
-const sans = Inter({
+const sans = Manrope({
   subsets: ["latin"],
   variable: "--font-sans",
 });

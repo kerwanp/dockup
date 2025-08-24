@@ -71,7 +71,7 @@ export function ScriptCopyBtn({
           )}
         </div>
         <div className="relative w-full">
-          <div className="absolute -inset-[1px] rounded-md bg-gradient-to-r from-purple-600 via-orange-600 to-pink-600 opacity-100 blur"></div>
+          <div className="absolute -inset-[1px] bg-gradient-to-l from-purple-600 via-orange-600 to-pink-600 opacity-100 blur"></div>
           <div className="relative min-w-[300px] grow font-mono">
             <pre className="rounded-md border border-border bg-white p-2 px-4 font-mono dark:bg-muted">
               {command}

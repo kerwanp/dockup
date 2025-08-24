@@ -5,7 +5,7 @@ import { createRelativeLink } from "fumadocs-ui/mdx";
 import { getMDXComponents } from "@/mdx-components";
 import { LLMCopyButton, ViewOptions } from "@/components/ai/page-actions";
 import { Metadata } from "next";
-import { createMetadata } from "@/lib/metadata";
+import { createMetadata, metadataImageDocs } from "@/lib/metadata";
 
 export default async function Page(props: {
   params: Promise<{ slug?: string[] }>;
@@ -53,11 +53,15 @@ export async function generateMetadata(props: {
   const page = source.getPage(params.slug);
   if (!page) notFound();
 
-  return createMetadata({
-    title: page.data.title,
-    description: page.data.description,
-    openGraph: {
-      type: "website",
-    },
-  });
+  return metadataImageDocs.withImage(
+    params.slug ?? [],
+    createMetadata({
+      title: page.data.title,
+      description: page.data.description,
+      openGraph: {
+        type: "website",
+        images: ["/og/docs/", ...(params.slug ?? []), "image.png"].join("/"),
+      },
+    }),
+  );
 }

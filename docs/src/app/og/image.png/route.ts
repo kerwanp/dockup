@@ -4,6 +4,8 @@ import { generateOGImage } from "../og";
 const font = readFileSync("./src/app/og/Comfortaa-Regular.ttf");
 const fontBold = readFileSync("./src/app/og/Comfortaa-Bold.ttf");
 
+export const dynamic = "force-static";
+
 export function GET() {
   return generateOGImage({
     title: "Dockup",

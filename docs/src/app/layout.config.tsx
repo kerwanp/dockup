@@ -17,7 +17,7 @@ export const linkItems: LinkItemType[] = [
   },
   {
     type: "custom",
-    children: <GithubInfo owner="kerwanp" repo="sidekit" />,
+    children: <GithubInfo owner="kerwanp" repo="dockup" />,
   },
 ];
 

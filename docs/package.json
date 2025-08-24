@@ -14,6 +14,7 @@
     "@fumadocs/mdx-remote": "^1.4.0",
     "@radix-ui/react-separator": "^1.1.7",
     "dockup": "workspace:*",
+    "feed": "^5.1.0",
     "fumadocs-core": "15.7.1",
     "fumadocs-docgen": "^2.1.0",
     "fumadocs-mdx": "11.8.0",

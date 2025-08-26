@@ -1,7 +1,7 @@
 {
   "name": "dockup",
   "type": "module",
-  "version": "0.0.0-alpha.7",
+  "version": "0.0.0-alpha.8",
   "repository": {
     "type": "git",
     "url": "git+https://github.com/kerwanp/dockup.git"
@@ -54,7 +54,6 @@
     "@zenobius/ink-mouse": "^1.0.3",
     "c12": "^3.2.0",
     "chalk": "^5.6.0",
-    "citty": "^0.1.6",
     "commander": "^14.0.0",
     "defu": "^6.1.4",
     "dockerode": "^4.0.7",
@@ -66,7 +65,6 @@
     "pathe": "^2.0.3",
     "pkg-types": "^2.3.0",
     "prettier": "^3.6.2",
-    "pretty-error": "^4.0.0",
     "react": "^19.1.1",
     "zod": "^4.1.1"
   },

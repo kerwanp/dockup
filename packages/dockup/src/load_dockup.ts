@@ -1,6 +1,6 @@
 import { ResolvedDockupConfig } from "./config/types.js";
 import { Service } from "./services/service.js";
-import { ServiceNotFoundException } from "./exceptions/service_not_found_exception.js";
+import { InvalidServiceNameException } from "./exceptions/invalid_service_name_exception.js";
 import Dockerode from "dockerode";
 
 export interface Dockup {
@@ -55,7 +55,11 @@ export async function loadDockup({
     services,
     service(id) {
       const output = services.find((service) => service.id === id);
-      if (!output) throw new ServiceNotFoundException(id);
+      if (!output)
+        throw new InvalidServiceNameException(
+          id,
+          this.services.map((s) => s.name),
+        );
       return output;
     },
     async init(id?: string) {

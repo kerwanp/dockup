@@ -2,8 +2,8 @@ import { loadFile, writeFile } from "magicast";
 import { loadConfig } from "./load_config.js";
 import { ObjectExpression } from "@babel/types";
 
-export async function addServices(...ids: string[]) {
-  const { configFile } = await loadConfig();
+export async function updateConfig(cwd = process.cwd(), ...ids: string[]) {
+  const { configFile } = await loadConfig(cwd);
 
   if (!configFile) throw new Error("Config not found");
 

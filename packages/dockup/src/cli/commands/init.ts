@@ -1,35 +1,26 @@
-import { defineCommand } from "citty";
-import { steps } from "../steps.js";
 import { prompts } from "../utils.js";
-import { confirm, log } from "@clack/prompts";
-import { loadConfig } from "../../config/load_config.js";
+import { createDockupCommand } from "../create_command.js";
+import { steps } from "../steps.js";
+import { createConfig } from "../../config/create_config.js";
 
-export default defineCommand({
-  meta: {
-    name: "init",
-    description: "Initialize Dockup configuration",
-  },
-  async run() {
+export type InitCommandArgs = {
+  cwd: string;
+  service?: string[];
+};
+
+export const InitCommand = createDockupCommand("init")
+  .description("initialize Dockup project")
+  .option("-s, --service [services...]", "services to configure")
+  .option("-C, --cwd <string>", "current working directory")
+  .action(async (args: InitCommandArgs) => {
     prompts.intro("dockup init");
 
-    const config = await loadConfig();
+    await steps.assertNotInitialized(args.cwd);
 
-    if (config._configFile) {
-      log.error("Dockup is already initialized");
-      return;
-    }
+    const services = args.service ?? (await steps.selectServices());
 
-    await steps.init(true);
+    await steps.installDockupGlobally();
+    await steps.installDockupLocally(args.cwd);
 
-    const shouldStart = await confirm({
-      message: "Do you want to start Dockup?",
-    });
-
-    if (shouldStart) {
-      await steps.startTerminal();
-      return;
-    }
-
-    log.success("Get started using `dockup up`");
-  },
-});
+    await createConfig(args.cwd, services);
+  });

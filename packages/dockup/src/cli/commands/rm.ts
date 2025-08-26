@@ -1,30 +1,22 @@
-import { defineCommand } from "citty";
 import { prompts } from "../utils.js";
 import { loadConfig } from "../../config/load_config.js";
 import { loadDockup } from "../../load_dockup.js";
 import { confirm, log, tasks } from "@clack/prompts";
+import { createDockupCommand } from "../create_command.js";
 
-export default defineCommand({
-  meta: {
-    name: "rm",
-    description: "Remove a service and its data",
-  },
-  args: {
-    service: {
-      type: "positional",
-      description: "The service name",
-      required: false,
-    },
-  },
-  async run({ args }) {
+export type MetadataCommandArgs = [string[], { cwd?: string }];
+
+export const RmCommand = createDockupCommand("rm")
+  .description("destroy service(s) by removing containers")
+  .option("-C, --cwd <string>", "current working directory")
+  .argument("[services...]", "the service name")
+  .action(async (...[ids, { cwd }]: MetadataCommandArgs) => {
     prompts.intro("dockup rm");
 
-    const config = await loadConfig();
+    const config = await loadConfig(cwd);
     const dockup = await loadDockup(config);
 
-    const services = args.service
-      ? [args.service]
-      : dockup.services.map((s) => s.id);
+    const services = ids.length ? ids : dockup.services.map((s) => s.id);
 
     log.warn(`Services to be removed: ${services.join(", ")}`);
 
@@ -47,5 +39,4 @@ export default defineCommand({
         },
       })),
     );
-  },
-});
+  });

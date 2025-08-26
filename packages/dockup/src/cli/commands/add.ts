@@ -1,52 +1,32 @@
-import { defineCommand } from "citty";
-
-import * as services from "../../../modules/services.js";
-import { addServices } from "../../config/add_service.js";
-import { log } from "@clack/prompts";
 import { prompts } from "../utils.js";
+import { createDockupCommand } from "../create_command.js";
 import { steps } from "../steps.js";
+import { log } from "@clack/prompts";
+import * as services from "../../../modules/services.js";
+import { updateConfig } from "../../config/update_config.js";
+import { InvalidServiceException } from "../../exceptions/invalid_service_exception.js";
 
-export default defineCommand({
-  meta: {
-    name: "add",
-    description: "Add a new service to your environment",
-  },
-  args: {
-    name: {
-      type: "positional",
-      description: "The service name from the registry",
-      required: false,
-    },
-  },
-  async run({ args }) {
+export type AddCommandOptions = {
+  cwd?: string;
+};
+
+export const AddCommand = createDockupCommand("add")
+  .description("add service(s) to configuration")
+  .argument("[services...]", "services to install")
+  .option("-C, --cwd <string>", "current working directory")
+  .action(async (ids: string[], args: AddCommandOptions) => {
     prompts.intro("dockup add");
 
-    await steps.ensureConfig(false);
+    await steps.assertInitialized(args.cwd);
 
-    let ids: string[] = [];
+    const toInstall = ids.length ? ids : await steps.selectServices();
 
-    if (args.name) {
-      const service = services[args.name as keyof typeof services];
-
-      if (!service) {
-        throw new Error(
-          `Could not found '${args.name}' service. Check the registry at https://dockup.dev/registry`,
-        );
-      }
-
-      ids.push(args.name);
-    } else {
-      ids = await steps.selectServices();
+    for (const id of toInstall) {
+      if (services[id as keyof typeof services]) continue;
+      throw new InvalidServiceException(id);
     }
 
-    const updated = await addServices(...ids);
+    await updateConfig(args.cwd, ...toInstall);
 
-    if (!updated) {
-      throw new Error(
-        `Your configuration file is not standard, you must add the service manually.`,
-      );
-    }
-
-    log.success(`Configuration updated successfully`);
-  },
-});
+    log.success(`Added ${toInstall.length} services to 'dockup.config.ts'`);
+  });

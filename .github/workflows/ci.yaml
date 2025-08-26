@@ -1,0 +1,41 @@
+name: ⚛ CI
+
+on:
+  push:
+    branches:
+      - main
+  pull_request:
+
+concurrency:
+  group: ci-${{ github.ref }}
+  cancel-in-progress: true
+
+jobs:
+  test:
+    runs-on: ${{ matrix.os }}
+    strategy:
+      matrix:
+        os: [ubuntu-latest, windows-latest]
+        node-version:
+          - 20.10.0
+          - 21.x
+          - 23.x
+    steps:
+      - name: ⬇ Checkout repository
+        uses: actions/checkout@v4
+      - name: ⚡ Cache turbo build setup
+        uses: actions/cache@v4
+        with:
+          path: .turbo
+          key: ${{ runner.os }}-turbo-${{ github.sha }}
+          restore-keys: |
+            ${{ runner.os }}-turbo-
+      - name: 🅝 Setup node
+        uses: actions/setup-node@v4
+        with:
+          node-version: ${{ matrix.node-version }}
+          cache: "yarn"
+      - name: 📦 Install Node dependencies
+        run: yarn install
+      - run: yarn lint build typecheck --filter="./packages/*"
+      - run: yarn test --filter="./packages/*"
